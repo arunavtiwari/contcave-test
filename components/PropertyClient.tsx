@@ -406,8 +406,10 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                     </div>
 
                     {/* Calendar */}
-                    <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8" : "hidden"}>
-                        <Button label="Sync Calendar" onClick={() => signIn("google-calendar")} />
+                    <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8 items-center" : "hidden"}>
+                        <div className='w-1/3'>
+                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} />
+                        </div>
                         <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} />
                     </div>
 

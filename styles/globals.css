@@ -252,3 +252,7 @@ input[type="text"]:focus {
 	box-shadow: none !important;
 
 }
+
+.fc-daygrid-event-dot {
+	display: none !important;
+}
