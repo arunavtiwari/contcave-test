@@ -34,9 +34,12 @@ function Button({
         disabled:opacity-70 
         disabled:cursor-not-allowed 
         hover:opacity-90 
-        py-2 
+        py-2.5
         transition 
         w-full 
+        flex
+        justify-center
+        gap-5
         ${rounded ? " rounded-full" : "rounded-md"}
         ${classNames || (outline ? "bg-white border border-black text-black" : "bg-black border-red-500 text-white")}
       `}
@@ -44,7 +47,7 @@ function Button({
       {Icon && (
         <Icon
           size={24}
-          className={`absolute left-4 top-3 ${isColor && "text-blue-600"}`}
+          className={`${isColor && "text-blue-600"}`}
         />
       )}
       {label}

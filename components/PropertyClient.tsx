@@ -20,6 +20,7 @@ import { SessionProvider, signIn } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import ManageTimings from './ManageTimings';
 import Button from './Button';
+import { FaRegCalendarCheck } from "react-icons/fa6";
 
 type Props = {
     listing: any;
@@ -408,7 +409,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                     {/* Calendar */}
                     <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8 items-center" : "hidden"}>
                         <div className='w-1/3'>
-                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} />
+                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} icon={FaRegCalendarCheck}/>
                         </div>
                         <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} />
                     </div>
