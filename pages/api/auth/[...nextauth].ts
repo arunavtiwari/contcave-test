@@ -5,28 +5,75 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-interface ExtendedToken {
-  accessToken?: string;
-  refreshToken?: string;
-  accessTokenExpires?: number | null;
-  error?: string;
-  [key: string]: any;
+// Helper function to refresh the Google Calendar access token.
+async function refreshCalendarAccessToken(token: any) {
+  try {
+    const url = "https://oauth2.googleapis.com/token";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        client_id: process.env.GOOGLE_CLIENT_ID!,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+        grant_type: "refresh_token",
+        refresh_token: token.calendarRefreshToken,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      calendarAccessToken: refreshedTokens.access_token,
+      // Set new expiry time (current time + expires_in seconds)
+      calendarAccessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      // Use new refresh token if provided, else fallback to existing one
+      calendarRefreshToken: refreshedTokens.refresh_token ?? token.calendarRefreshToken,
+    };
+  } catch (error) {
+    console.error("Error refreshing calendar access token:", error);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
 }
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
+    // Basic Google
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      id: "google",
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       authorization: {
         params: {
-          scope: "openid profile email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events",
+          scope: "openid email profile",
+        },
+      },
+    }),
+    // Google Calendar
+    GoogleProvider({
+      id: "google-calendar",
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope:
+            "openid email profile https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events",
           access_type: "offline",
           prompt: "consent",
         },
       },
     }),
+    // Normal
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -38,11 +85,8 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         }
 
-        // Normalize email to avoid case sensitivity issues
-        const normalizedEmail = credentials.email.toLowerCase();
-
         const user = await prisma.user.findUnique({
-          where: { email: normalizedEmail },
+          where: { email: credentials.email },
         });
 
         if (!user || !user.hashedPassword) {
@@ -53,11 +97,9 @@ export const authOptions: AuthOptions = {
           credentials.password,
           user.hashedPassword
         );
-
         if (!isCorrectPassword) {
           throw new Error("Invalid credentials");
         }
-
         return user;
       },
     }),
@@ -69,84 +111,41 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, account, user }) {
-      const extendedToken = token as ExtendedToken;
-
-      // On initial sign in, persist the OAuth tokens and expiry
-      if (account && user) {
-        if (account.type === "oauth") {
-          extendedToken.accessToken = account.access_token;
-          extendedToken.refreshToken = account.refresh_token;
-          extendedToken.accessTokenExpires = account.expires_at
-            ? account.expires_at * 1000
-            : null;
+    async jwt({ token, account }) {
+      if (account) {
+        if (account.provider === "google-calendar") {
+          token.calendarAccessToken = account.access_token;
+          token.calendarRefreshToken = account.refresh_token;
+          token.calendarAccessTokenExpires = Date.now() + (Number(account.expires_in) * 1000);
+        } else if (account.provider === "google") {
+          token.accessToken = account.access_token;
         }
-        return extendedToken;
+        return token;
       }
 
-      // Return the token if the access token has not expired
       if (
-        typeof extendedToken.accessTokenExpires === "number" &&
-        Date.now() < extendedToken.accessTokenExpires
+        token.calendarAccessToken &&
+        token.calendarAccessTokenExpires &&
+        Date.now() < Number(token.calendarAccessTokenExpires)
       ) {
-        return extendedToken;
+        return token;
       }
 
-      // Access token has expired, try to refresh it if a refresh token exists
-      if (extendedToken.refreshToken) {
-        return await refreshAccessToken(extendedToken);
+      if (token.calendarRefreshToken) {
+        return await refreshCalendarAccessToken(token);
       }
 
-      // If no refresh token is available, return the token as-is.
-      return extendedToken;
+      return token;
     },
     async session({ session, token }) {
-      session.accessToken = (token as ExtendedToken).accessToken;
-      // Optionally include any token errors in the session
-      session.error = (token as ExtendedToken).error;
+      session.accessToken = token.accessToken;
+      session.calendarAccessToken = token.calendarAccessToken as string | undefined;
+      session.calendarRefreshToken = token.calendarRefreshToken as string | undefined;
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
-
-async function refreshAccessToken(token: ExtendedToken): Promise<ExtendedToken> {
-  try {
-    const params = new URLSearchParams({
-      client_id: process.env.GOOGLE_CLIENT_ID!,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-      grant_type: "refresh_token",
-      refresh_token: token.refreshToken!,
-    });
-
-    const response = await fetch(
-      `https://oauth2.googleapis.com/token?${params.toString()}`,
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        method: "POST",
-      }
-    );
-
-    const refreshedTokens = await response.json();
-
-    if (!response.ok) {
-      throw refreshedTokens;
-    }
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
-    };
-  } catch (error) {
-    console.error("Error refreshing access token:", error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
-  }
-}
 
 export default NextAuth(authOptions);

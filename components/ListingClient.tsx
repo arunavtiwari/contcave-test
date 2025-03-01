@@ -150,7 +150,7 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
   };
   return (
     <Container>
-      <div className="max-w-screen-lg mx-auto">
+      <div className="max-w-screen-lg mx-auto pb-24">
         <div className="flex flex-col gap-6">
           <ListingHead
             title={listing.title}

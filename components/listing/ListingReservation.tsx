@@ -60,7 +60,7 @@ function ListingReservation({
 
   const calculateTotalPrice = () => {
     
-    const bookingFee = price * (isNaN(time) ? 0 : time); // assuming 4 hours as shown in the example
+    const bookingFee = price * (isNaN(time) ? 0 : time);
     return bookingFee + addons + platformFee;
   };
 

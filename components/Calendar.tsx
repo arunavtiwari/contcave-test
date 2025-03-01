@@ -174,17 +174,23 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
                     eventColor="black"
                     eventTextColor="white"
                     handleWindowResize={true}
+                    displayEventEnd={true}
+                    eventTimeFormat={{
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        meridiem: 'short'
+                    }}
                     views={{
                         timeGridWeek: { allDaySlot: false },
                         timeGridDay: { allDaySlot: false },
                     }}
                     businessHours={{
-                        // Mark the operational days as business hours (full day)
-                        daysOfWeek: businessDays, // e.g. [1, 2, 3] for mon, tue, wed
+                        daysOfWeek: businessDays,
                         startTime: '00:00',
                         endTime: '24:00',
                     }}
                 />
+
             </div>
 
             <Modal

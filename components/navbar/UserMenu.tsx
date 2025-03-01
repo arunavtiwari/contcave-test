@@ -64,8 +64,8 @@ function UserMenu({ currentUser }: Props) {
 
   return (
     <div className="relative">
-      <div className="flex flex-row items-center gap-3">
-        <div className="flex flex-row items-center gap-1">
+      <div className="flex">
+        {/* <div className="flex flex-row items-center gap-1">
           <div
             className="hidden md:block text-sm font-semibold p-3 rounded-full hover:bg-neutral-100 transition cursor-pointer"
             onClick={onRent}
@@ -84,7 +84,7 @@ function UserMenu({ currentUser }: Props) {
           >
             Hire Talent
           </div>
-        </div>
+        </div> */}
         <div
           onClick={toggleOpen}
           className="ai-outline-menu p-4 md:py-1 md:px-2 border-[2px] flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
@@ -108,7 +108,7 @@ function UserMenu({ currentUser }: Props) {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute rounded-xl shadow-solid-6 w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-[3.2rem] text-sm p-3"
+          className="absolute rounded-xl shadow-solid-6 w-max bg-white overflow-hidden right-0 top-[3.2rem] text-sm p-3"
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (

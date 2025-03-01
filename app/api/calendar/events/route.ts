@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { google } from 'googleapis';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export async function GET() {
   // Get the session using NextAuth
@@ -28,17 +28,17 @@ export async function GET() {
       process.env.GOOGLE_CLIENT_SECRET
     );
 
-    // Set the access token using the session data
-    if (!session.accessToken) {
-      console.error('Access token is missing from the session.');
+    // Use the calendar access token from the session (provided by the google-calendar provider)
+    if (!session.calendarAccessToken) {
+      console.error('Calendar access token is missing from the session.');
       return NextResponse.json(
-        { error: 'Session access token missing' },
+        { error: 'Session calendar access token missing' },
         { status: 401 }
       );
     }
 
     oauth2Client.setCredentials({
-      access_token: session.accessToken,
+      access_token: session.calendarAccessToken,
     });
 
     // Set up the Google Calendar API client
@@ -63,7 +63,6 @@ export async function GET() {
     return NextResponse.json(response.data.items || []);
   } catch (error: any) {
     console.error('Error fetching calendar events:', error.message || error);
-
     return NextResponse.json(
       { error: 'Failed to fetch calendar events', details: error.message },
       { status: 500 }

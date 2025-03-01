@@ -170,10 +170,6 @@ body,
 	border-radius: 5px;
 }
 
-.button:hover {
-	background-color: #353839;
-}
-
 input[type="text"]:focus {
 	box-shadow: none !important;
 }
@@ -249,6 +245,7 @@ input[type="text"]:focus {
 	cursor: pointer !important;
 	background-color: #000000!important;
 	color: #ffffff !important;
+	flex-direction: column-reverse;
 }
 
 .fc-button:focus {

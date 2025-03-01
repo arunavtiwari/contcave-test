@@ -38,7 +38,7 @@ export default async function Home() {
         <FunFact />
         <FAQ />
         <CTA />
-        <Cover />
+        {/* <Cover /> */}
         {/* <Contact /> */}
         {/* <Blog/> */}
       </main>

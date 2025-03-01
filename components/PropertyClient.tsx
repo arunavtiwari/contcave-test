@@ -16,9 +16,10 @@ import { FaBolt } from "react-icons/fa";
 import ReactSwitch from 'react-switch';
 import Heading from "@/components/Heading";
 import Calendar from '@/components/Calendar';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, signIn } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import ManageTimings from './ManageTimings';
+import Button from './Button';
 
 type Props = {
     listing: any;
@@ -183,7 +184,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                             </label>
                             <textarea
                                 id="listingDescription"
-                                className="border rounded-xl pl-3 py-2 shadow-sm w-full"
+                                className="border rounded-xl pl-3 py-2 shadow-sm w-full resize-none"
                                 placeholder="Enter the description"
                                 value={initialListing.description}
                                 onChange={(e) => handleInputChange("description", e.target.value)}
@@ -406,6 +407,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
 
                     {/* Calendar */}
                     <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8" : "hidden"}>
+                        <Button label="Sync Calendar" onClick={() => signIn("google-calendar")} />
                         <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} />
                     </div>
 

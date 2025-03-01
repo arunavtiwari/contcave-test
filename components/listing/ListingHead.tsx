@@ -56,7 +56,6 @@ function ListingHead({
   };
   return (
     <>
-      <div></div>
       <Heading
         title={title}
         subtitle={`India, ${location?.label}`}
