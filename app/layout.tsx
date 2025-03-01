@@ -1,17 +1,17 @@
 import ClientOnly from "@/components/ClientOnly";
 import Footer from "@/components/Footer";
 import ToastContainerBar from "@/components/ToastContainerBar";
-import LoginModal from "@/components/models/LoginModal";
-import RegisterModal from "@/components/models/RegisterModal";
-import RentModal from "@/components/models/RentModal";
-import SearchModal from "@/components/models/SearchModal";
+import LoginModal from "@/components/modals/LoginModal";
+import RegisterModal from "@/components/modals/RegisterModal";
+import RentModal from "@/components/modals/RentModal";
+import SearchModal from "@/components/modals/SearchModal";
 import Navbar from "@/components/navbar/Navbar";
 import { Montserrat } from "next/font/google";
 import "../styles/globals.css";
 import getCurrentUser from "./actions/getCurrentUser";
 import ScrollToTop from "@/components/ScrollToTop";
 import CookieConsent from "@/components/CookieConsentBanner";
-import OwnerRegisterModal from "@/components/models/OwnerRegisterModal";
+import OwnerRegisterModal from "@/components/modals/OwnerRegisterModal";
 
 export const metadata = {
   title: "ContCave | Find the Perfect Shoot Space with Ease",

@@ -9,6 +9,8 @@ import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Modal from "./Modal";
+import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/react";
 
 function OwnerRegisterModal() {
     const ownerRegisterModal = useOwnerRegisterModal();
@@ -120,9 +122,9 @@ function OwnerRegisterModal() {
                                 message: "Password must be at least 8 characters long",
                             },
                             // pattern: {
-              //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
-              //   message: "Password must contain letters and numbers",
-              // },
+                            //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
+                            //   message: "Password must contain letters and numbers",
+                            // },
                         })}
                         type={showPassword ? "text" : "password"}
                         errors={errors}
@@ -139,14 +141,23 @@ function OwnerRegisterModal() {
                 </div>
             }
             footer={
-                <div className="text-neutral-500 text-center mt-4 font-light">
-                    Already have an account?{" "}
-                    <span
-                        onClick={() => ownerRegisterModal.onClose()}
-                        className="text-neutral-800 cursor-pointer hover:underline"
-                    >
-                        Log in
-                    </span>
+                <div className="flex flex-col gap-4 mt-3">
+                    <Button
+                        rounded
+                        classNames="w-full py-2.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded-full flex items-center justify-center"
+                        label="Continue with Google"
+                        icon={FcGoogle}
+                        onClick={() => signIn("google-calendar")}
+                    />
+                    <div className="text-neutral-500 text-center mt-4 font-light">
+                        Already have an account?{" "}
+                        <span
+                            onClick={() => ownerRegisterModal.onClose()}
+                            className="text-neutral-800 cursor-pointer hover:underline"
+                        >
+                            Log in
+                        </span>
+                    </div>
                 </div>
             }
         />

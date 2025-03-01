@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import Modal from './models/Modal';
+import Modal from './modals/Modal';
 
 interface Event {
     id: string;

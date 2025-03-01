@@ -154,8 +154,8 @@ function RegisterModal() {
         <div className="flex flex-col gap-4 mt-6">
           <hr className="border-neutral-300" />
           <Button
-            outline
-            classNames="w-full py-3 bg-white border border-neutral-300 hover:bg-neutral-100 rounded-full flex items-center justify-center space-x-3"
+            rounded
+            classNames="w-full py-2.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded-full flex items-center justify-center"
             label="Continue with Google"
             icon={FcGoogle}
             onClick={() => signIn("google")}

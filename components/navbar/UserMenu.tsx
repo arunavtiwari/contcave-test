@@ -108,7 +108,7 @@ function UserMenu({ currentUser }: Props) {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute rounded-xl shadow-solid-6 w-max bg-white overflow-hidden right-0 top-[3.2rem] text-sm p-3"
+          className="absolute rounded-xl shadow-solid-6 min-w-60 bg-white overflow-hidden right-0 top-[3.2rem] text-sm p-3"
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (

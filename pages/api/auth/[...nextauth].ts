@@ -5,7 +5,6 @@ import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-// Helper function to refresh the Google Calendar access token.
 async function refreshCalendarAccessToken(token: any) {
   try {
     const url = "https://oauth2.googleapis.com/token";
@@ -31,10 +30,9 @@ async function refreshCalendarAccessToken(token: any) {
     return {
       ...token,
       calendarAccessToken: refreshedTokens.access_token,
-      // Set new expiry time (current time + expires_in seconds)
       calendarAccessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      // Use new refresh token if provided, else fallback to existing one
-      calendarRefreshToken: refreshedTokens.refresh_token ?? token.calendarRefreshToken,
+      calendarRefreshToken:
+        refreshedTokens.refresh_token ?? token.calendarRefreshToken,
     };
   } catch (error) {
     console.error("Error refreshing calendar access token:", error);
@@ -73,7 +71,7 @@ export const authOptions: AuthOptions = {
         },
       },
     }),
-    // Normal
+    // Normal Credentials provider
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -112,12 +110,27 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google-calendar") {
+        try {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { is_owner: true },
+          });
+        } catch (error) {
+          console.error("Error updating owner field:", error);
+          return false;
+        }
+      }
+      return true;
+    },
     async jwt({ token, account }) {
       if (account) {
         if (account.provider === "google-calendar") {
           token.calendarAccessToken = account.access_token;
           token.calendarRefreshToken = account.refresh_token;
-          token.calendarAccessTokenExpires = Date.now() + (Number(account.expires_in) * 1000);
+          token.calendarAccessTokenExpires =
+            Date.now() + Number(account.expires_in) * 1000;
         } else if (account.provider === "google") {
           token.accessToken = account.access_token;
         }
@@ -140,8 +153,12 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
-      session.calendarAccessToken = token.calendarAccessToken as string | undefined;
-      session.calendarRefreshToken = token.calendarRefreshToken as string | undefined;
+      session.calendarAccessToken = token.calendarAccessToken as
+        | string
+        | undefined;
+      session.calendarRefreshToken = token.calendarRefreshToken as
+        | string
+        | undefined;
       return session;
     },
   },

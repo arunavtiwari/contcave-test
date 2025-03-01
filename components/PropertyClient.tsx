@@ -7,7 +7,7 @@ import { GiPhotoCamera, GiPineTree, GiSunflower, GiCube, GiLighthouse, GiMountai
 import { IoDiamond } from 'react-icons/io5';
 import { MdOutlineVilla, MdClose } from 'react-icons/md';
 import AddonsSelection, { Addon } from './inputs/AddonsSelection';
-import CustomAddonModal from './models/CustomAddonModal';
+import CustomAddonModal from './modals/CustomAddonModal';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ImageUpload from './inputs/ImageUpload';
