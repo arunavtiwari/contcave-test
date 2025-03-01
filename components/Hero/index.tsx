@@ -4,12 +4,14 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import Image from 'next/image'
-import Router from "next/router";
+import { useRouter } from "next/navigation";
+
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
+  const router = useRouter();
   useEffect(() => {
     let tl = gsap.timeline({
       scrollTrigger: {
@@ -58,7 +60,7 @@ const Hero = () => {
               Whether you're telling a story or capturing a moment, find the space that elevates your vision.
             </p>
             <button
-              onClick={() => Router.push('/home')}
+              onClick={() => router.push('/home')}
               className="bg-white mt-10 w-fit text-black px-6 py-2.5 rounded-full font-semibold text-lg shadow-md hover:scale-105 duration-300 relative z-20"
             >
               Explore now
