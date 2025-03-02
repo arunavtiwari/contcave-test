@@ -59,6 +59,15 @@ function ListingInfo({
 
   const [review, setReview] = useState({ rating: 5, comment: "" });
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  const toggleExpand = () => setIsExpanded((prev) => !prev);
+
+  const limit = 200;
+  const shouldTruncate = description.length > limit;
+  const displayedText = isExpanded || !shouldTruncate
+    ? description
+    : description.slice(0, limit) + "...";
+
   useEffect(() => {
     const fetchReviews = async () => {
       let addonList: any = await getAddons();
@@ -118,14 +127,25 @@ function ListingInfo({
         />
       )}
 
-      <p className="text-lg font-light text-neutral-500">{description}</p>
+      {/* Description */}
+      <div className="text-base font-normal">
+        <p>{displayedText}</p>
+        {shouldTruncate && (
+          <button
+            onClick={toggleExpand}
+            className="underline font-medium text-sm mt-1"
+          >
+            {isExpanded ? "See less" : "See more"}
+          </button>
+        )}
+      </div>
 
       <hr />
 
       {/* Address */}
       <div className="flex flex-col gap-2">
         <p className="text-xl font-semibold">Address</p>
-        <p className="text-neutral-500 font-light">{fullListing.actualLocation ? fullListing.actualLocation.display_name : ""}</p>
+        <p className="font-normal">{fullListing.actualLocation ? fullListing.actualLocation.display_name : ""}</p>
       </div>
       <hr />
 
@@ -186,7 +206,7 @@ function ListingInfo({
                 <div className="w-1/2">
                   <strong>Carpet Area</strong>
                 </div>
-                <div className="text-gray-500">
+                <div className="">
                   {fullListing.otherDetails?.carpetArea ?? 0} sqft
                 </div>
               </>
@@ -200,7 +220,7 @@ function ListingInfo({
                 <div className="w-1/2">
                   <strong>Max People</strong>
                 </div>
-                <div className="text-gray-500">
+                <div className="">
                   {fullListing.otherDetails?.maximumPax ?? 0} People
                 </div>
               </>
@@ -214,7 +234,7 @@ function ListingInfo({
                 <div className="w-1/2">
                   <strong>Min Booking Hours</strong>
                 </div>
-                <div className="text-gray-500">
+                <div className="">
                   {fullListing.otherDetails?.minimumBookingHours ?? 0} Hrs
                 </div>
               </>
@@ -234,7 +254,7 @@ function ListingInfo({
               {service}
             </div>
           ))}
-          <p className="text-gray-500 mt-3"><strong>Note:</strong> Please utilize this space for its intended activities to make the most of your experience.</p>
+          <p className="text-gray-500 mt-3"><strong className="text-black">Note:</strong> Please utilize this space for its intended activities to make the most of your experience.</p>
         </div>
       </div>
 
@@ -338,7 +358,7 @@ function ListingInfo({
         </p>
         <a
           onClick={() => router.push("/cancellation")}
-          className="text-blue-500 underline cursor-pointer"
+          className="text-blue-500 underline cursor-pointer w-fit"
         >
           Know more about Cancellation Policy
         </a>

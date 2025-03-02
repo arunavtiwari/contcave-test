@@ -29,7 +29,6 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
   const router = useRouter();
   const loginModal = useLoginModel();
 
-  //disable time to be implented instead of disable date
   const disableDates = reservations.map((reservation) => new Date(reservation.startDate));
 
   const disabledStartTimes = reservations.map((reservations) => new Date(reservations.startTime));
@@ -150,8 +149,8 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
   };
   return (
     <Container>
-      <div className="max-w-screen-lg mx-auto pb-24">
-        <div className="flex flex-col gap-6">
+      <div className="max-w-[1120px] mx-auto pb-24">
+        <div className="flex flex-col gap-2">
           <ListingHead
             title={listing.title}
             imageSrc={listing.imageSrc}

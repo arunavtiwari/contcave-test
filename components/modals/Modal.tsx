@@ -80,13 +80,13 @@ function Modal({
 
   return (
     <>
-      <div className="justify-center items-center flex fixed inset-0 z-[999] bg-neutral-800/70 p-2">
+      <div className="justify-center items-center flex fixed inset-0 z-[999] bg-neutral-800/70">
         <div className={`relative mx-auto h-fit ${autoWidth ? '' : 'w-full  lg:w-3/6 xl:w-2/5  md:w-4/6'} ${customWidth}`}>
           <div
             className={`translate duration-300 ${showModal ? "translate-y-0" : "translate-y-full"
               } ${showModal ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="translate h-fit border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-white">
+            <div className="translate h-fit max-h-[calc(100vh-20px)] border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-white">
               {/* Header */}
               <div className="flex items-center p-4 rounded-t-xl justify-between relative border-b-[1px] bg-slate-100/40">
                 <button
