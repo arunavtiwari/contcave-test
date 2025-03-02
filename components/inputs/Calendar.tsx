@@ -10,7 +10,7 @@ type Props = {
   allowedDays?:any[];
 };
 
-function Calendar({ value, onChange, disabledDates,allowedDays }: Props) {
+function Calendar({ value, onChange, disabledDates, allowedDays }: Props) {
   const isDayDisabled = (value:Date) => {
      const days = ["mon","tue","wed","thu","fri","sat","sun"];
      if(allowedDays && allowedDays?.filter((item) => item).length) {

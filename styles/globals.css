@@ -243,7 +243,7 @@ input[type="text"]:focus {
 	border-radius: 9999px !important;
 	text-align: center;
 	cursor: pointer !important;
-	background-color: #000000!important;
+	background-color: #000000 !important;
 	color: #ffffff !important;
 	flex-direction: column-reverse;
 }
@@ -255,4 +255,22 @@ input[type="text"]:focus {
 
 .fc-daygrid-event-dot {
 	display: none !important;
+}
+
+.rdrSelected,
+.rdrInRange,
+.rdrStartEdge,
+.rdrEndEdge {
+	background-color: black !important;
+	border-color: black !important;
+}
+
+.rdrDayStartPreview {
+	border-color: transparent !important;
+	background-color: rgba(128, 128, 128, 0.1) !important;
+
+}
+
+.rdrDay {
+	color: transparent !important;
 }

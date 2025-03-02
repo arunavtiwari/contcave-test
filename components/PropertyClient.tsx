@@ -76,7 +76,8 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
 
     const handleAmenitiesChange = (updatedAmenities: { [key: string]: boolean }) => {
         setSelectedAmenities(updatedAmenities);
-        handleInputChange("amenities", Object.keys(updatedAmenities));
+        const selectedKeys = Object.keys(updatedAmenities).filter(key => updatedAmenities[key]);
+        handleInputChange("amenities", selectedKeys);
     };
 
     const handleAddonChange = (updatedAddons: Addon[]) => {
@@ -151,7 +152,6 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
     const removeImage = (indexToRemove: number) => {
         const updatedImages = initialListing.imageSrc.filter((_: any, index: number) => index !== indexToRemove);
         handleInputChange('imageSrc', updatedImages);
-        //update();
     };
 
     return (
@@ -409,9 +409,9 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                     {/* Calendar */}
                     <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8 items-center" : "hidden"}>
                         <div className='w-1/3'>
-                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} icon={FaRegCalendarCheck}/>
+                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} icon={FaRegCalendarCheck} />
                         </div>
-                        <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} />
+                        <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} listingId={listing.id} />
                     </div>
 
                     {/* Manage Timings */}

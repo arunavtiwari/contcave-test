@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
-// Define a type for the time slots
 type TimeSlot = string | null;
 
-// Define the props interface
 interface TimeSlotPickerProps {
     onTimeSelect: (time: TimeSlot, field: 'start' | 'end') => void;
     selectedStart: TimeSlot;
@@ -56,51 +54,50 @@ const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({ onTimeSelect, selectedS
 
     const compareDates = (time: string) => {
         let newtime = time;
-    
+
         if (newtime.length < 8) {
             newtime = "0" + newtime;
         }
-        
+
         const parseDateTime = (date, time) => {
             const [hourString, minuteString, period] = time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
             let hours = parseInt(hourString, 10);
             const minutes = parseInt(minuteString, 10);
-    
+
             if (period === "PM" && hours < 12) {
                 hours += 12;
             }
             if (period === "AM" && hours === 12) {
                 hours = 0;
             }
-    
+
             return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
         };
-    
+
         let isReserved = false;
-    
+
         const newDateTime = parseDateTime(selectedDate, newtime);
-    
+
         isReserved =
             disabledStartTimes.some((item) => item <= newDateTime) &&
             disabledEndTimes.some((item) => item >= newDateTime);
-    
+
         return isReserved;
     };
-    
 
     return (
         <div className="p-4">
             <div className="mb-4">
-                <div className="flex justify-between bg-gray-200 p-1 rounded">
+                <div className="flex justify-between bg-gray-200 p-1.5 rounded-xl">
                     <button
-                        className={`flex-1 px-4 py-1 text-start font-bold rounded ${activeSegment === 'start' ? "bg-white shadow-md" : "bg-transparent"}`}
+                        className={`flex-1 px-4 py-1 text-center font-bold rounded-xl ${activeSegment === 'start' ? "bg-white shadow-md" : "bg-transparent"}`}
                         onClick={() => handleSegmentChange('start')}
                     >
                         Start
                         <span className="block text-xs text-gray-500">{selectedStart || "Please select"}</span>
                     </button>
                     <button
-                        className={`flex-1 px-4 py-1 text-start font-bold rounded ${activeSegment === 'end' ? "bg-white shadow-md" : "bg-transparent"}`}
+                        className={`flex-1 px-4 py-1 text-center font-bold rounded-xl ${activeSegment === 'end' ? "bg-white shadow-md" : "bg-transparent"}`}
                         onClick={() => handleSegmentChange('end')}
                     >
                         End
@@ -108,7 +105,7 @@ const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({ onTimeSelect, selectedS
                     </button>
                 </div>
             </div>
-            <div className="gap-4 grid grid-cols-3 h-[35vh] mb-4 overflow-y-auto scrollbar-thin">
+            <div className="gap-4 grid grid-cols-3 h-[30vh] mb-4 pr-1 overflow-y-auto scrollbar-thin">
                 {timeSlots.filter((t, idx) =>
                     idx >= timeSlots.indexOf(getModifiedTime(operationalTimings?.operationalHours?.start) + " AM") &&
                     idx <= timeSlots.indexOf(getModifiedTime(operationalTimings?.operationalHours?.end) + " PM")
@@ -121,7 +118,7 @@ const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({ onTimeSelect, selectedS
                             key={index}
                             onClick={() => handleTimeSlotClick(time)}
                             disabled={isDisabled || undefined}
-                            className={`rounded px-4 py-2 text-sm ${isReserved ? 'disabled:opacity-70' : ''} ${(activeSegment === 'start' && time === selectedStart) || (activeSegment === 'end' && time === selectedEnd) ? 'border-rose-500 bg-rose-500 text-white' : 'bg-transparent'}`}
+                            className={`rounded-xl px-4 py-2 text-sm ${isReserved ? 'disabled:opacity-70' : ''} ${(activeSegment === 'start' && time === selectedStart) || (activeSegment === 'end' && time === selectedEnd) ? 'border-black bg-black text-white' : 'bg-transparent'}`}
                         >
                             <span className={isDisabledBasedOnStart && !isReserved ? 'line-through' : ''}>{time}</span>
                             {isReserved && (<p className="text-xs py-0">Not available</p>)}

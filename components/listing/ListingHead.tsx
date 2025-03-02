@@ -29,11 +29,9 @@ function ListingHead({
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const selectedImageRef = useRef<HTMLDivElement>(null);
 
-  // Create an array to track each image's loaded state
   const [loaded, setLoaded] = useState<boolean[]>(new Array(imageSrc.length).fill(false));
 
   useEffect(() => {
-    // Reset loading state if imageSrc changes
     setLoaded(new Array(imageSrc.length).fill(false));
   }, [imageSrc]);
 
@@ -56,7 +54,6 @@ function ListingHead({
     }
   }, [showModal, selectedImageIndex]);
 
-  // Helper to render an image with a Tailwind skeleton overlay
   const renderImageWithSkeleton = (
     src: string,
     index: number,

@@ -8,7 +8,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import Modal from './modals/Modal';
-
+import axios from "axios";
 interface Event {
     id: string;
     title: string;
@@ -21,15 +21,15 @@ interface Event {
 interface CalendarProps {
     operationalStart: string;
     operationalEnd: string;
+    listingId: string;
 }
 
-export default function Calendar({ operationalStart, operationalEnd }: CalendarProps) {
+export default function Calendar({ operationalStart, operationalEnd, listingId}: CalendarProps) {
     const { data: session } = useSession();
     const [events, setEvents] = useState<Event[]>([]);
     const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
     const calendarRef = useRef<FullCalendar>(null);
 
-    // Modal state for viewing event details
     const [modalOpen, setModalOpen] = useState(false);
     const [modalData, setModalData] = useState({
         id: '',
@@ -39,7 +39,6 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
         desc: '',
     });
 
-    // Responsive view state: listWeek for small screens, dayGridMonth for larger ones
     const [calendarView, setCalendarView] = useState('dayGridMonth');
 
     useEffect(() => {
@@ -65,7 +64,6 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
             ? { left: 'prev,next', center: 'title', right: '' }
             : { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' };
 
-    // Convert a day string (e.g., "mon") to a numeric index (0=Sunday, 1=Monday, etc.)
     const dayToIndex = (day: string) => {
         const days: { [key: string]: number } = {
             sun: 0,
@@ -79,7 +77,6 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
         return days[day.toLowerCase()];
     };
 
-    // Compute an array of operational day indexes based on the start and end props
     const getBusinessDays = (start: string, end: string): number[] => {
         const startIndex = dayToIndex(start);
         const endIndex = dayToIndex(end);
@@ -89,7 +86,6 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
                 days.push(i);
             }
         } else {
-            // For wrap-around scenarios (e.g. Fri to Tue)
             for (let i = startIndex; i < 7; i++) {
                 days.push(i);
             }
@@ -110,8 +106,10 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
 
     const fetchEvents = async () => {
         try {
-            const res = await fetch('/api/calendar/events');
-            const data = await res.json();
+            const res = await axios.get("/api/calendar/events", {
+                params: { listingId: listingId },
+            });
+            const data = await res.data;
 
             if (data) {
                 const formattedEvents = data.map((event: any) => ({
@@ -123,7 +121,6 @@ export default function Calendar({ operationalStart, operationalEnd }: CalendarP
                     desc: event.description || '',
                 }));
 
-                // Filter events to only include those on operational (business) days
                 const filteredEvents = formattedEvents.filter((event: any) => {
                     const eventDate = new Date(event.start);
                     return businessDays.includes(eventDate.getDay());
