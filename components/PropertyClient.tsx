@@ -19,8 +19,6 @@ import Calendar from '@/components/Calendar';
 import { SessionProvider, signIn } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import ManageTimings from './ManageTimings';
-import Button from './Button';
-import { FaRegCalendarCheck } from "react-icons/fa6";
 
 type Props = {
     listing: any;
@@ -160,10 +158,10 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                 {/* Sidebar */}
                 <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} listingId={initialListing.id} />
                 {/* Main Content */}
-                <div className="bg-white flex flex-col sm:p-8 sm:pt-0 w-full gap-5 sm:border-l-2 border-gray-200">
-                    <Heading title={selectedMenu} />
+                <div className="bg-white flex flex-col sm:p-8 sm:pt-12 w-full gap-5 sm:border-l-2 border-gray-200">
                     {/* Edit Property */}
                     <div className={selectedMenu === "Edit Property" ? "flex flex-col gap-5 sm:gap-8" : "hidden"}>
+                        <Heading title='Edit Property' />
                         {/* Name */}
                         <div className="flex sm:items-center gap-1 sm:gap-10 flex-col sm:flex-row">
                             <label className="text-sm font-medium text-gray-700 sm:w-1/3">
@@ -208,6 +206,20 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                                     </option>
                                 ))}
                             </select>
+                        </div>
+                        {/* Price */}
+                        <div className="flex sm:items-center gap-1 sm:gap-10 flex-col sm:flex-row">
+                            <label className="block text-sm font-medium text-gray-700 sm:w-1/3">
+                                Price
+                            </label>
+                            <input
+                                type="number"
+                                id="listingPrice"
+                                className="border rounded-full py-2 shadow-sm w-full"
+                                placeholder="Price"
+                                value={initialListing.price}
+                                onChange={(e) => handleInputChange("price", Number(e.target.value))}
+                            />
                         </div>
                         {/* Location */}
                         <div className="flex sm:items-center gap-1 sm:gap-10 flex-col sm:flex-row">
@@ -408,14 +420,16 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
 
                     {/* Calendar */}
                     <div className={selectedMenu === "Sync Calendar" ? "flex flex-col gap-5 sm:gap-8 items-center" : "hidden"}>
-                        <div className='w-1/3'>
-                            <Button rounded label="Sync Calendar" onClick={() => signIn("google-calendar")} icon={FaRegCalendarCheck} />
+                        <div className='flex justify-between w-full items-center'>
+                            <Heading title='Connect Your Google Calendar' subtitle='Sync offline and Contcave bookings to keep your availability up to date—automatically' />
+                            <button className='bg-black text-white px-15 h-fit py-2 rounded-full hover:opacity-90 flex gap-4 justify-center items-center' onClick={() => signIn("google-calendar")}><img src="/images/icon/google_calendar.png" alt="Girl in a jacket" width="30" className="bg-white rounded-full" /> Sync Google Calendar</button>
                         </div>
                         <Calendar operationalStart={initialListing.otherDetails?.operationalDays?.start} operationalEnd={initialListing.otherDetails?.operationalDays?.end} listingId={listing.id} />
                     </div>
 
                     {/* Manage Timings */}
                     <div className={selectedMenu === "Manage Timings" ? "flex flex-col gap-5 sm:gap-8" : "hidden"}>
+                        <Heading title='Manage Studio Availability' subtitle='Update your working hours manually' />
                         <ManageTimings listingId={listing.id} defaultStartTime={initialListing.otherDetails?.operationalHours?.start} defaultEndTime={initialListing.otherDetails?.operationalHours?.end} defaultStartDay={initialListing.otherDetails?.operationalDays?.start} defaultEndDay={initialListing.otherDetails?.operationalDays?.end} />
                     </div>
 

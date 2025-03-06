@@ -25,6 +25,7 @@ import SpaceVerification from "../inputs/SpaceVerification";
 import TermsAndConditionsModal from "../inputs/TermsAndConditions";
 import CustomAddonModal from "./CustomAddonModal";
 import AutoComplete from "../inputs/AutoComlete";
+import { MdClose } from "react-icons/md";
 
 type Props = {};
 
@@ -46,14 +47,14 @@ function RentModal({ }: Props) {
   const rentModel = useRentModal();
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
-  const [amenities, setAmenities] = useState<Amenities[]>([]);  // Explicitly specify the type
-  const [listingDetails, setListigDetails] = useState<ListingDetails>();  // Explicitly specify the type
+  const [amenities, setAmenities] = useState<Amenities[]>([]);
+  const [listingDetails, setListigDetails] = useState<ListingDetails>();
 
-  const [customAmenities, setCustomAmenities] = useState<CustomAmenities[]>([]);  // Explicitly specify the type
+  const [customAmenities, setCustomAmenities] = useState<CustomAmenities[]>([]);
 
   const [verifications, setVerifications] = useState();
   const [terms, setTerms] = useState(Boolean);
-  const [addons, setAddons] = useState<any[]>([]);  // Explicitly specify the type
+  const [addons, setAddons] = useState<any[]>([]);
 
   const [selectedAmenities, setSelectedAmenities] = useState<{ [key: string]: boolean }>({});
   const [selectedAddons, setSelectedAddons] = useState<{}>({});
@@ -72,12 +73,9 @@ function RentModal({ }: Props) {
     setSelectedAddons(updatedAddons);
   };
   const handleDetailsChange = (newDetails: ListingDetails) => {
-    // Handle the updated details here, e.g., set state or pass up further
     setListigDetails(newDetails)
   };
   useEffect(() => {
-
-    // Fetch amenities data
     const fetchAmenitiesData = async () => {
       try {
         const amenitiesData = await getAmenities();
@@ -240,6 +238,12 @@ function RentModal({ }: Props) {
     </div>
   );
 
+
+  const removeImage = (indexToRemove: number) => {
+    const updatedImages = imageSrc.filter((_: any, index: number) => index !== indexToRemove);
+    setCustomValue("imageSrc", updatedImages)
+  }
+
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-4">
@@ -274,10 +278,27 @@ function RentModal({ }: Props) {
           title="Add photos of your place"
           subtitle="Show creators what your place looks like!"
         />
-        <ImageUpload
-          onChange={(value) => setCustomValue("imageSrc", value)}
-          values={imageSrc}
-        />
+        <div className="flex gap-6 w-full flex-wrap justify-center sm:justify-normal mt-2 sm:mt-0">
+          {imageSrc.map((item: any, index: number) => (
+            <div key={index} className="relative">
+              <div className="h-32 w-32 rounded-xl flex items-center">
+                <img src={item} alt={`Image ${index}`} className="h-full w-full object-cover rounded-xl" />
+              </div>
+              <button
+                onClick={() => removeImage(index)}
+                className="absolute top-2 right-2 rounded-full"
+              >
+                <MdClose size={20} className="text-white bg-black rounded-full hover:bg-white hover:text-black border-solid border-2 border-black transition-colors ease-in-out duration-300" />
+              </button>
+            </div>
+          ))}
+          {(!imageSrc || imageSrc.length < 8) && (
+            <ImageUpload
+              onChange={(value) => setCustomValue("imageSrc", value)}
+              values={imageSrc}
+            />
+          )}
+        </div>
       </div>
     );
   }
@@ -290,27 +311,28 @@ function RentModal({ }: Props) {
           title="Your Property Details"
           subtitle="Set an inviting title and subtitle for your property"
         />
-        <Input
-          id="title"
-          label="Title"
-          disabled={isLoading}
-          register={register("title", {
-            required: "Name of your property",
-          })}
-          errors={errors}
-          required
-        />
-        <hr />
-        <Input
-          id="description"
-          label="Description"
-          disabled={isLoading}
-          register={register("Description", {
-            required: "Describe your property",
-          })}
-          errors={errors}
-          required
-        />
+        <div>
+          <Input
+            id="title"
+            label="Title"
+            disabled={isLoading}
+            register={register("title", {
+              required: "Name of your property",
+            })}
+            errors={errors}
+            required
+          />
+          <Input
+            id="description"
+            label="Description"
+            disabled={isLoading}
+            register={register("Description", {
+              required: "Describe your property",
+            })}
+            errors={errors}
+            required
+          />
+        </div>
       </div>
     );
   }

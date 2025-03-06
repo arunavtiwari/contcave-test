@@ -46,7 +46,7 @@ const AddonsSelection: React.FC<AddonsCheckboxProps> = ({ addons, initialSelecte
             {/* Selected Addons Section */}
             {selectedAddons.length > 0 && (
                 <div>
-                    <h2 className="text-lg font-semibold">Selected Addons</h2>
+                    <h2 className="text-lg font-semibold mb-5">Selected Addons</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
                         {selectedAddons.map((addon) => {
                             const originalIndex = addons.findIndex((a) => a.name === addon.name);
@@ -93,7 +93,7 @@ const AddonsSelection: React.FC<AddonsCheckboxProps> = ({ addons, initialSelecte
             {addons.filter((addon) => !selectedAddons.some((selected) => selected.name === addon.name))
                 .length > 0 && (
                     <div>
-                        <h2 className="text-lg font-semibold">Available Addons</h2>
+                        <h2 className="text-lg font-semibold mb-5">Available Addons</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
                             {addons
                                 .filter(

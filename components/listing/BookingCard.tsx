@@ -62,7 +62,6 @@ function BookingCard({
         [onAction, actionId, disabled]
     );
 
-    // Determine Price
     const price = useMemo(() => {
         if (reservation) {
             return reservation.totalPrice;
@@ -70,7 +69,7 @@ function BookingCard({
         return data.price;
     }, [reservation, data.price]);
 
-    const bookingStatus = reservation?.isApproved; // `status` can be 'approved', 'pending', or 'cancelled'
+    const bookingStatus = reservation?.isApproved;
 
     const getStatusBanner = () => {
         if (bookingStatus == 1) {

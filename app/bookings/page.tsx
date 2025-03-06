@@ -4,6 +4,7 @@ import React from "react";
 import getCurrentUser from "../actions/getCurrentUser";
 import getReservation from "../actions/getReservations";
 import BookingClient from "./BookingClient";
+import Container from "@/components/Container";
 export const dynamic = "force-dynamic"
 
 type Props = {};
@@ -35,9 +36,11 @@ const BookingPage = async (props: Props) => {
   }
 
   return (
+
     <ClientOnly>
       <BookingClient reservations={reservations} currentUser={currentUser} />
     </ClientOnly>
+
   );
 };
 

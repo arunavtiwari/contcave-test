@@ -26,7 +26,7 @@ function Footer() {
   return (
     <ClientOnly>
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-10 px-10 lg:px-20 py-15 bg-gray-100 text-gray-600"
+        className="grid grid-cols-1 md:grid-cols-2 gap-10 px-10 lg:px-20 py-15 bg-gray-100 text-gray-600 mt-20"
       >
         {/* Left Part */}
         <div className="grid place-items-center md:place-items-start gap-8">

@@ -131,27 +131,29 @@ function ReservationsClient({ reservations, currentUser }: Props) {
     [router]
   );
   return (
-    <Container>
-      <Heading title="Reservations" subtitle="Bookings on your properties" />
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
-        {reservations.map((reservation) => (
-          <BookingCard
-            key={reservation.id}
-            data={reservation.listing}
-            reservation={reservation}
-            actionId={reservation.id}
-            onAction={onCancel}
-            onChat={onChat}
-            onApprove={onApprove}
-            onReject={onReject}
-            onDelete={onDelete}
-            disabled={deletingId === reservation.id}
-            actionLabel="Cancel reservation"
-            currentUser={currentUser}
-          />
-        ))}
-      </div>
-    </Container>
+    <div className="mt-5">
+      <Container>
+        <Heading title="Reservations" subtitle="Bookings on your properties" />
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+          {reservations.map((reservation) => (
+            <BookingCard
+              key={reservation.id}
+              data={reservation.listing}
+              reservation={reservation}
+              actionId={reservation.id}
+              onAction={onCancel}
+              onChat={onChat}
+              onApprove={onApprove}
+              onReject={onReject}
+              onDelete={onDelete}
+              disabled={deletingId === reservation.id}
+              actionLabel="Cancel reservation"
+              currentUser={currentUser}
+            />
+          ))}
+        </div>
+      </Container>
+    </div>
   );
 }
 
