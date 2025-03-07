@@ -13,7 +13,8 @@ import Container from '@/components/Container';
 interface IParams {
   propertyId?: string;
 }
-const EditPropertyComponent = async ({ params }: { params: IParams }) => {
+const EditPropertyComponent = async (props: { params: Promise<IParams> }) => {
+  const params = await props.params;
   const currentUser = await getCurrentUser();
   const listing = await getListingById({ listingId: params.propertyId }) as any;
   const amenitiesData = await getAmenities(true);

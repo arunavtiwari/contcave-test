@@ -14,8 +14,10 @@ import CookieConsent from "@/components/CookieConsentBanner";
 import OwnerRegisterModal from "@/components/modals/OwnerRegisterModal";
 
 export const metadata = {
+  metadataBase: new URL("https://www.contcave.com"),
   title: "ContCave | Find the Perfect Shoot Space with Ease",
-  description: "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
+  description:
+    "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
   icons: "https://i.ibb.co/4JdrGHS/Screenshot-2023-11-22-at-3-52-33-AM.png",
   keywords: [
     "studio booking",
@@ -31,18 +33,21 @@ export const metadata = {
   authors: [{ name: "ContCave" }],
   openGraph: {
     title: "ContCave | Find the Perfect Shoot Space with Ease",
-    description: "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
+    description:
+      "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
     url: "https://www.contcave.com",
     type: "website",
-    images: "/public/images/logo/logo-dark.png",
+    images: "/images/logo/logo-dark.png",
   },
   twitter: {
     card: "summary_large_image",
     title: "ContCave | Find the Perfect Shoot Space with Ease",
-    description: "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
-    images: "/public/images/logo/logo-dark.png",
+    description:
+      "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
+    images: "/images/logo/logo-dark.png",
   },
 };
+
 
 const font = Montserrat({
   subsets: ["latin"],

@@ -240,7 +240,7 @@ input[type="text"]:focus {
 }
 
 .fc-daygrid-event {
-	border-radius: 9999px !important;
+	border-radius: 10px !important;
 	text-align: center;
 	cursor: pointer !important;
 	background-color: #000000 !important;

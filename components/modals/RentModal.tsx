@@ -51,12 +51,15 @@ function RentModal({ }: Props) {
   const [listingDetails, setListigDetails] = useState<ListingDetails>();
 
   const [customAmenities, setCustomAmenities] = useState<CustomAmenities[]>([]);
-
   const [verifications, setVerifications] = useState();
   const [terms, setTerms] = useState(Boolean);
   const [addons, setAddons] = useState<any[]>([]);
 
-  const [selectedAmenities, setSelectedAmenities] = useState<{ [key: string]: boolean }>({});
+  // Updated selectedAmenities state to store both predefined and custom amenities
+  const [selectedAmenities, setSelectedAmenities] = useState<{
+    predefined: { [key: string]: boolean },
+    custom: string[]
+  }>({ predefined: {}, custom: [] });
   const [selectedAddons, setSelectedAddons] = useState<{}>({});
 
   const handleTermsAndConditions = (accept: any) => {
@@ -66,15 +69,20 @@ function RentModal({ }: Props) {
   const handleVerificationChange = (verifications: any) => {
     setVerifications(verifications);
   };
-  const handleAmenitiesChange = (updatedAmenities: { [key: string]: boolean }) => {
+
+  // Updated handler to receive both predefined and custom amenities
+  const handleAmenitiesChange = (updatedAmenities: { predefined: { [key: string]: boolean }, custom: string[] }) => {
     setSelectedAmenities(updatedAmenities);
   };
+
   const handleAddonChange = (updatedAddons: Addon[]) => {
     setSelectedAddons(updatedAddons);
   };
+
   const handleDetailsChange = (newDetails: ListingDetails) => {
-    setListigDetails(newDetails)
+    setListigDetails(newDetails);
   };
+
   useEffect(() => {
     const fetchAmenitiesData = async () => {
       try {
@@ -91,12 +99,13 @@ function RentModal({ }: Props) {
         const addonsData = await getAddons();
         setAddons(addonsData);
       } catch (error) {
-        console.error('Error fetching amenities:', error);
+        console.error('Error fetching addons:', error);
       }
     };
 
     fetchAddonsData();
   }, []);
+
   const {
     register,
     handleSubmit,
@@ -113,7 +122,6 @@ function RentModal({ }: Props) {
       price: 1,
       title: "",
       description: "",
-      amenities: [],
       addons: []
     },
   });
@@ -121,7 +129,6 @@ function RentModal({ }: Props) {
   const category = watch("category");
   const location = watch("location");
   const actualLocation = watch("actualLocation");
-
   const imageSrc = watch("imageSrc");
 
   const Map = useMemo(
@@ -146,24 +153,13 @@ function RentModal({ }: Props) {
 
   const onNext = () => {
     if (step === STEPS.CATEGORY && !category) {
-      toast.error("Please Select a Category", {
-        toastId: "Category"
-      });
+      toast.error("Please Select a Category", { toastId: "Category" });
       return;
     }
     if (step === STEPS.LOCATION && !location) {
-      toast.error("Please Add the Location", {
-        toastId: "Location"
-      });
+      toast.error("Please Add the Location", { toastId: "Location" });
       return;
     }
-
-    // if (step === STEPS.IMAGES && (!imageSrc || imageSrc.length === 0)) {
-    //   toast.error("Please Upload an Image", {
-    //     toastId: "Image"
-    //   });
-    //   return;
-    // }
     setStep((value) => value + 1);
   };
 
@@ -171,8 +167,9 @@ function RentModal({ }: Props) {
     if (step !== STEPS.TERMS) {
       return onNext();
     }
-    data.amenities = Object.keys(selectedAmenities).filter((key) => selectedAmenities[key]),
-      data.addons = selectedAddons;
+    data.amenities = Object.keys(selectedAmenities.predefined).filter(key => selectedAmenities.predefined[key]);
+    data.customAmenities = selectedAmenities.custom;
+    data.addons = selectedAddons;
     data.otherDetails = listingDetails;
     data.verifications = verifications;
     data.terms = terms;
@@ -182,19 +179,14 @@ function RentModal({ }: Props) {
     axios
       .post("/api/listings", data)
       .then(() => {
-        toast.success("Listing Created!", {
-          toastId: "Listing_Created"
-        });
+        toast.success("Listing Created!", { toastId: "Listing_Created" });
         router.refresh();
         reset();
         setStep(STEPS.CATEGORY);
         rentModel.onClose();
-
       })
       .catch(() => {
-        toast.error("Something Went Wrong", {
-          toastId: "Listing_Error_1"
-        });
+        toast.error("Something Went Wrong", { toastId: "Listing_Error_1" });
       })
       .finally(() => {
         setIsLoading(false);
@@ -205,7 +197,6 @@ function RentModal({ }: Props) {
     if (step === STEPS.OTHERDETAILS) {
       return "Verification";
     }
-
     return "Next";
   }, [step]);
 
@@ -213,7 +204,6 @@ function RentModal({ }: Props) {
     if (step === STEPS.CATEGORY) {
       return undefined;
     }
-
     return "Back";
   }, [step]);
 
@@ -238,11 +228,10 @@ function RentModal({ }: Props) {
     </div>
   );
 
-
   const removeImage = (indexToRemove: number) => {
     const updatedImages = imageSrc.filter((_: any, index: number) => index !== indexToRemove);
-    setCustomValue("imageSrc", updatedImages)
-  }
+    setCustomValue("imageSrc", updatedImages);
+  };
 
   if (step === STEPS.LOCATION) {
     bodyContent = (
@@ -258,18 +247,14 @@ function RentModal({ }: Props) {
         <AutoComplete
           value={location ? location.display_name : ''}
           onChange={(selected: any) => {
-            const latlng = [
-              selected.latlng.lat,
-              selected.latlng.lon
-            ];
-            setCustomValue("actualLocation", { display_name: selected.display_name, latlng: latlng });
+            const latlng = [selected.latlng.lat, selected.latlng.lon];
+            setCustomValue("actualLocation", { display_name: selected.display_name, latlng });
           }}
         />
         <Map center={actualLocation?.latlng ?? location?.latlng} />
       </div>
     );
   }
-
 
   if (step === STEPS.IMAGES) {
     bodyContent = (
@@ -293,16 +278,12 @@ function RentModal({ }: Props) {
             </div>
           ))}
           {(!imageSrc || imageSrc.length < 8) && (
-            <ImageUpload
-              onChange={(value) => setCustomValue("imageSrc", value)}
-              values={imageSrc}
-            />
+            <ImageUpload onChange={(value) => setCustomValue("imageSrc", value)} values={imageSrc} />
           )}
         </div>
       </div>
     );
   }
-
 
   if (step === STEPS.DESCRIPTION) {
     bodyContent = (
@@ -316,9 +297,7 @@ function RentModal({ }: Props) {
             id="title"
             label="Title"
             disabled={isLoading}
-            register={register("title", {
-              required: "Name of your property",
-            })}
+            register={register("title", { required: "Name of your property" })}
             errors={errors}
             required
           />
@@ -326,9 +305,7 @@ function RentModal({ }: Props) {
             id="description"
             label="Description"
             disabled={isLoading}
-            register={register("Description", {
-              required: "Describe your property",
-            })}
+            register={register("Description", { required: "Describe your property" })}
             errors={errors}
             required
           />
@@ -337,22 +314,17 @@ function RentModal({ }: Props) {
     );
   }
 
-  if (step == STEPS.PRICE) {
+  if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading
-          title="Now, set your price"
-          subtitle="How much do you charge per hour?"
-        />
+        <Heading title="Now, set your price" subtitle="How much do you charge per hour?" />
         <Input
           id="price"
           label="Price"
           formatPrice
           type="number"
           disabled={isLoading}
-          register={register("Price", {
-            required: "Price of your property",
-          })}
+          register={register("Price", { required: "Price of your property" })}
           errors={errors}
           required
         />
@@ -360,65 +332,67 @@ function RentModal({ }: Props) {
     );
   }
 
-  if (step == STEPS.AMENITIES) {
-
+  if (step === STEPS.AMENITIES) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
           title="Select the amenities at your property"
           subtitle="Add the amenities available at the shoot space"
         />
-        <AmenitiesCheckbox amenities={amenities} onChange={handleAmenitiesChange}></AmenitiesCheckbox>
+        <AmenitiesCheckbox amenities={amenities} onChange={handleAmenitiesChange} />
       </div>
     );
   }
 
-  if (step == STEPS.ADDONS) {
+  if (step === STEPS.ADDONS) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
           title="Select the add-ons, if available at your property"
-          subtitle="Additonal chargeable services/facilities"
+          subtitle="Additional chargeable services/facilities"
         />
-        <AddonsSelection addons={addons} initialSelectedAddons={[]} onSelectedAddonsChange={handleAddonChange}></AddonsSelection>
-        <CustomAddonModal save={(value: any) => { addons.push(value); setAddons(addons) }} />
-
+        <AddonsSelection addons={addons} initialSelectedAddons={[]} onSelectedAddonsChange={handleAddonChange} />
+        <CustomAddonModal save={(value: any) => { addons.push(value); setAddons(addons); }} />
       </div>
     );
   }
 
-  if (step == STEPS.OTHERDETAILS) {
+  if (step === STEPS.OTHERDETAILS) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading
-          title="Other details of the listing"
-        />
-        <OtherListingDetails onDetailsChange={handleDetailsChange}></OtherListingDetails>
+        <Heading title="Other details of the listing" />
+        <OtherListingDetails onDetailsChange={handleDetailsChange} />
       </div>
     );
   }
-  if (step == STEPS.VERIFICATION) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
 
-        <SpaceVerification onVerification={handleVerificationChange}></SpaceVerification>
-        {/*  <UserVerification  onSubmit={handleSubmit(onSubmit)}></UserVerification> */}
-      </div>
-    );
-  }
-  if (step == STEPS.TERMS) {
+  if (step === STEPS.VERIFICATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <TermsAndConditionsModal onChange={handleTermsAndConditions}></TermsAndConditionsModal>
-        {/*  <UserVerification  onSubmit={handleSubmit(onSubmit)}></UserVerification> */}
+        <SpaceVerification onVerification={handleVerificationChange} />
       </div>
     );
   }
+
+  if (step === STEPS.TERMS) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <TermsAndConditionsModal onChange={handleTermsAndConditions} />
+      </div>
+    );
+  }
+
   return (
     <Modal
       disabled={isLoading}
       isOpen={rentModel.isOpen}
-      title={step == STEPS.VERIFICATION ? "Space Verification" : step == STEPS.TERMS ? "TERMS AND CONDITIONS FOR PROPERTY HOSTS" : "List Your Space!"}
+      title={
+        step === STEPS.VERIFICATION
+          ? "Space Verification"
+          : step === STEPS.TERMS
+            ? "TERMS AND CONDITIONS FOR PROPERTY HOSTS"
+            : "List Your Space!"
+      }
       actionLabel={actionLabel}
       onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondActionLabel}
@@ -429,7 +403,7 @@ function RentModal({ }: Props) {
       customWidth={step === STEPS.VERIFICATION ? 'w-1/2' : ''}
       body={bodyContent}
       verificationBtn={step === STEPS.TERMS}
-      fixedHeight={step == STEPS.ADDONS ? true : false}
+      fixedHeight={step === STEPS.ADDONS ? true : false}
       termsAndConditionsAccept={terms}
     />
   );

@@ -72,10 +72,13 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
         });
     }, []);
 
-    const handleAmenitiesChange = (updatedAmenities: { [key: string]: boolean }) => {
-        setSelectedAmenities(updatedAmenities);
-        const selectedKeys = Object.keys(updatedAmenities).filter(key => updatedAmenities[key]);
-        handleInputChange("amenities", selectedKeys);
+    const handleAmenitiesChange = (updatedAmenities: { predefined: { [key: string]: boolean }, custom: string[] }) => {
+        const selectedPredefined = Object.keys(updatedAmenities.predefined).filter(
+            (key) => updatedAmenities.predefined[key]
+        );
+
+        handleInputChange("amenities", selectedPredefined);
+        handleInputChange("otherAmenities", updatedAmenities.custom);
     };
 
     const handleAddonChange = (updatedAddons: Addon[]) => {
@@ -270,8 +273,8 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                             <label className="block text-sm font-medium text-gray-700 sm:w-1/3">
                                 Amenities
                             </label>
-                            <div className="mt-1 flex space-x-6 w-full">
-                                <AmenitiesCheckbox checked={initialListing.amenities} amenities={amenities} onChange={handleAmenitiesChange} />
+                            <div className="flex w-full">
+                                <AmenitiesCheckbox checked={initialListing.amenities} amenities={amenities} onChange={handleAmenitiesChange} customAmenities={initialListing.otherAmenities} />
                             </div>
                         </div>
                         {/* Addons */}
@@ -309,7 +312,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                                     value={initialListing.otherDetails?.operationalDays?.start}
                                     onChange={(e) => handleInputChange("otherDetails.operationalDays.start", e.target.value)}
                                 >
-                                    <option value="Mon" selected>Mon</option>
+                                    <option value="Mon">Mon</option>
                                     <option value="Tue">Tue</option>
                                     <option value="Wed">Wed</option>
                                     <option value="Thu">Thu</option>
@@ -317,6 +320,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                                     <option value="Sat">Sat</option>
                                     <option value="Sun">Sun</option>
                                 </select>
+
                                 <span>-</span>
                                 <select
                                     className="border rounded-full w-25 py-1 text-center"
@@ -327,7 +331,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                                     <option value="Tue">Tue</option>
                                     <option value="Wed">Wed</option>
                                     <option value="Thu">Thu</option>
-                                    <option value="Fri" selected>Fri</option>
+                                    <option value="Fri">Fri</option>
                                     <option value="Sat">Sat</option>
                                     <option value="Sun">Sun</option>
                                 </select>

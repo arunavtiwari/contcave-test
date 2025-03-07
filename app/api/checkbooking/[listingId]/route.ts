@@ -8,10 +8,8 @@ interface IParams {
   listingId?: string;
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: IParams }
-) {
+export async function GET(request: Request, props: { params: Promise<IParams> }) {
+  const params = await props.params;
   try {
     const currentUser = await getCurrentUser();
 

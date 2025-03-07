@@ -8,10 +8,11 @@ import Categories from "@/components/navbar/Categories";
 export const dynamic = 'force-dynamic';
 
 interface HomeProps {
-    searchParams: IListingsParams;
+    searchParams: Promise<IListingsParams>;
 }
 
-export default async function Home({ searchParams }: HomeProps) {
+export default async function Home(props: HomeProps) {
+    const searchParams = await props.searchParams;
     const listing = await getListings(searchParams);
     const currentUser = await getCurrentUser();
 
