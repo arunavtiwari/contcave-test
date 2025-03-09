@@ -18,34 +18,8 @@ const EditPropertyComponent = async (props: { params: Promise<IParams> }) => {
   const currentUser = await getCurrentUser();
   const listing = await getListingById({ listingId: params.propertyId }) as any;
   const amenitiesData = await getAmenities(true);
-  let addonsData = await getAddons();
-  let updatedAddons: any = [];
-  if (listing && listing.addons && listing.addons.length) {
-    updatedAddons = addonsData.map((item) => {
-      let addon = listing.addons?.find((listitem: any) => listitem.name === item.name);
-      if (addon) {
-        return {
-          ...item,
-          price: addon.price,
-          qty: addon.qty,
-          checked: addon.checked ?? true
-        };
-      } else {
-        return item;
-      }
-    });
+  const addonsData = await getAddons();
 
-    listing.addons?.forEach((addon: any) => {
-      let exists = addonsData.some((item) => item.name === addon.name);
-      if (!exists) {
-        updatedAddons.push({
-          ...addon,
-          checked: addon.checked ?? true
-        });
-      }
-    });
-
-  }
   if (!listing) {
     return (
       <ClientOnly>
@@ -63,7 +37,7 @@ const EditPropertyComponent = async (props: { params: Promise<IParams> }) => {
   return (
     <Container>
       <ClientOnly>
-        <PropertyClient listing={listing} predefinedAmenities={amenitiesData} predefinedAddons={updatedAddons}></PropertyClient>
+        <PropertyClient listing={listing} predefinedAmenities={amenitiesData} predefinedAddons={addonsData}></PropertyClient>
       </ClientOnly>
     </Container>
   );

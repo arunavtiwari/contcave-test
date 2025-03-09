@@ -161,7 +161,7 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                 {/* Sidebar */}
                 <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} listingId={initialListing.id} />
                 {/* Main Content */}
-                <div className="bg-white flex flex-col sm:p-8 sm:pt-12 w-full gap-5 sm:border-l-2 border-gray-200">
+                <div className="flex flex-col sm:p-8 sm:pt-12 w-full gap-5 sm:border-l-2 border-gray-200">
                     {/* Edit Property */}
                     <div className={selectedMenu === "Edit Property" ? "flex flex-col gap-5 sm:gap-8" : "hidden"}>
                         <Heading title='Edit Property' />

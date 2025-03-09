@@ -240,55 +240,57 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
   };
 
   return (
-    <Container>
-      <div className="max-w-[1120px] mx-auto pb-24">
-        <div className="flex flex-col gap-2">
-          <ListingHead
-            title={listing.title}
-            imageSrc={listing.imageSrc}
-            locationValue={listing.locationValue}
-            id={listing.id}
-            currentUser={currentUser}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
-            <ListingInfo
-              definedAmenities={definedAmenities}
-              user={listing.user}
-              category={category}
-              description={listing.description}
+    <div className="pt-10">
+      <Container>
+        <div className="max-w-[1120px] mx-auto pb-24">
+          <div className="flex flex-col gap-2">
+            <ListingHead
+              title={listing.title}
+              imageSrc={listing.imageSrc}
               locationValue={listing.locationValue}
-              fullListing={listing}
-              onAddonChange={handleAddonChange}
-              services={[]}
+              id={listing.id}
+              currentUser={currentUser}
             />
-            <div className="order-first mb-10 md:order-last md:col-span-3">
-              <ListingReservation
-                price={listing.price}
-                totalPrice={totalPrice}
-                platformFee={0}
-                time={timeDifferenceInHours}
-                addons={selectedAddons.reduce(
-                  (acc: number, value: { price: number; quantity: any }) =>
-                    acc + value.price * (value.quantity ?? 0),
-                  0
-                )}
-                setSelectDate={(value) => setSelectedDate(value)}
-                selectedDate={selectedDate}
-                setSelectTimeSlots={(value) => setSelectedTimeSlot(value)}
-                selectedTime={selectedTimeSlot}
-                onSubmit={onCreateReservation}
-                disabled={isLoading}
-                instantBooking={listing.instantBooking ?? 0}
-                disabledDates={disabledDates}
-                disabledStartTimes={disabledStartTimes}
-                disabledEndTimes={disabledEndTimes}
-                operationalTimings={listing.otherDetails}
+            <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+              <ListingInfo
+                definedAmenities={definedAmenities}
+                user={listing.user}
+                category={category}
+                description={listing.description}
+                locationValue={listing.locationValue}
+                fullListing={listing}
+                onAddonChange={handleAddonChange}
+                services={[]}
               />
+              <div className="order-first mb-10 md:order-last md:col-span-3">
+                <ListingReservation
+                  price={listing.price}
+                  totalPrice={totalPrice}
+                  platformFee={0}
+                  time={timeDifferenceInHours}
+                  addons={selectedAddons.reduce(
+                    (acc: number, value: { price: number; quantity: any }) =>
+                      acc + value.price * (value.quantity ?? 0),
+                    0
+                  )}
+                  setSelectDate={(value) => setSelectedDate(value)}
+                  selectedDate={selectedDate}
+                  setSelectTimeSlots={(value) => setSelectedTimeSlot(value)}
+                  selectedTime={selectedTimeSlot}
+                  onSubmit={onCreateReservation}
+                  disabled={isLoading}
+                  instantBooking={listing.instantBooking ?? 0}
+                  disabledDates={disabledDates}
+                  disabledStartTimes={disabledStartTimes}
+                  disabledEndTimes={disabledEndTimes}
+                  operationalTimings={listing.otherDetails}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

@@ -29,7 +29,6 @@ module.exports = {
         alabaster: "#FBFBFB",
         zumthor: "#EDF5FF",
         socialicon: "#D1D8E0",
-        green: "#27AE60",
         red: "#E74C3C"
       },
       fontSize: {

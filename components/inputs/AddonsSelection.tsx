@@ -27,6 +27,13 @@ const AddonsSelection: React.FC<AddonsCheckboxProps> = ({
         setSelectedAddons(initialSelectedAddons);
     }, [initialSelectedAddons]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onSelectedAddonsChange(selectedAddons);
+        }, 0);
+        return () => clearTimeout(timer);
+    }, [selectedAddons, onSelectedAddonsChange]);
+
     const handleCreateCustomAddon = useCallback(() => {
         addonModal.onOpen();
     }, [addonModal]);
@@ -39,11 +46,15 @@ const AddonsSelection: React.FC<AddonsCheckboxProps> = ({
     ) => {
         setSelectedAddons((prevSelected) => {
             const selectedIndex = prevSelected.findIndex((a) => a.name === addonName);
-
             const currentAddon =
                 selectedIndex !== -1
                     ? prevSelected[selectedIndex]
-                    : addons.find((a) => a.name === addonName) || { name: addonName, price: 0, qty: 0, imageUrl: '' };
+                    : addons.find((a) => a.name === addonName) || {
+                        name: addonName,
+                        price: 0,
+                        qty: 0,
+                        imageUrl: '',
+                    };
 
             const updatedAddon: Addon = {
                 ...currentAddon,
@@ -62,7 +73,6 @@ const AddonsSelection: React.FC<AddonsCheckboxProps> = ({
             } else {
                 newSelected = prevSelected.filter((a) => a.name !== addonName);
             }
-            onSelectedAddonsChange(newSelected);
             return newSelected;
         });
     };

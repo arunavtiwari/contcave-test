@@ -7,9 +7,15 @@ type Props = {
   onChange: (value: string[]) => void;
   values: string[];
   isFromPropertyClient?: boolean;
+  circle?: boolean;
 };
 
-function ImageUpload({ onChange, values, isFromPropertyClient = false }: Props) {
+function ImageUpload({
+  onChange,
+  values,
+  isFromPropertyClient = false,
+  circle = false,
+}: Props) {
   const [uploading, setUploading] = useState(false);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,18 +53,30 @@ function ImageUpload({ onChange, values, isFromPropertyClient = false }: Props) 
   return (
     <label
       htmlFor="file-upload"
-      className={`relative cursor-pointer hover:opacity-85 transition border-dashed border-2 border-neutral-300 flex flex-col justify-center items-center text-neutral-600 rounded-xl w-32 h-32 p-2"
-        }`}
+      className={`relative cursor-pointer hover:opacity-85 transition border-dashed border-2 border-neutral-300 flex flex-col justify-center items-center text-neutral-600 ${circle ? "rounded-full" : "rounded-xl"
+        } ${circle ? "w-24 h-24" : "w-32 h-32 p-2"}`}
     >
       {uploading ? (
         <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+      ) : circle ? (
+        values && values.length > 0 ? (
+          <img
+            src={values[0]}
+            alt="Profile"
+            className="w-full h-full object-cover rounded-full"
+          />
+        ) : (
+          <TbPhotoPlus size={30} className="text-neutral-600" />
+        )
       ) : (
         <TbPhotoPlus size={30} className="text-neutral-600" />
       )}
 
-      <div className={`font-semibold mt-1 flex items-center gap-2 text-sm`}>
-        {uploading ? "Uploading" : "Upload Image"}
-      </div>
+      {!circle && (
+        <div className="font-semibold mt-1 flex items-center gap-2 text-sm">
+          {uploading ? "Uploading" : "Upload Image"}
+        </div>
+      )}
 
       <input
         id="file-upload"

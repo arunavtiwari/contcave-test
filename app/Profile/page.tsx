@@ -3,6 +3,7 @@ import ProfileClient from "./ProfileClient";
 import getCurrentUser from "../actions/getCurrentUser";
 import EmptyState from "@/components/EmptyState";
 export const dynamic = "force-dynamic"
+import Container from '@/components/Container';
 
 type Props = {};
 
@@ -17,9 +18,11 @@ const Profile = async (props: Props) => {
     );
   }
   return (
-    <ClientOnly>
-      <ProfileClient profile={currentUser} />
-    </ClientOnly>
+    <Container>
+      <ClientOnly>
+        <ProfileClient profile={currentUser} />
+      </ClientOnly>
+    </Container>
   );
 };
 

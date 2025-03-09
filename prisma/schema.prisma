@@ -82,6 +82,7 @@ model Listing {
   Addons               Addons[]
   reviews              Review[]
   DayStatus            DayStatus[]
+  avgReviewRating      Float?
 }
 
 model DayStatus {
@@ -145,7 +146,7 @@ model Review {
   userId        String      @db.ObjectId
   listingId     String      @db.ObjectId
   reservationId String      @db.ObjectId
-  rating        Int
+  rating        Float?
   comment       String
   createdAt     DateTime    @default(now())
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)

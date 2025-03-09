@@ -3,10 +3,11 @@ import getCurrentUser from "../actions/getCurrentUser";
 import EmptyState from "@/components/EmptyState";
 import ProfileShareClient from "./ProfileShareClient";
 export const dynamic = "force-dynamic"
+import Container from '@/components/Container';
 
 type Props = {};
 
-const ProfileShare= async (props: Props) => {
+const ProfileShare = async (props: Props) => {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -17,9 +18,11 @@ const ProfileShare= async (props: Props) => {
     );
   }
   return (
-    <ClientOnly>
-      <ProfileShareClient profile={currentUser} />
-    </ClientOnly>
+    <Container>
+      <ClientOnly>
+        <ProfileShareClient profile={currentUser} />
+      </ClientOnly>
+    </Container>
   );
 };
 

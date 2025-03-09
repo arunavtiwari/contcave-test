@@ -60,7 +60,7 @@ function RentModal({ }: Props) {
     predefined: { [key: string]: boolean },
     custom: string[]
   }>({ predefined: {}, custom: [] });
-  const [selectedAddons, setSelectedAddons] = useState<{}>({});
+  const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
 
   const handleTermsAndConditions = (accept: any) => {
     setTerms(accept);
@@ -70,7 +70,6 @@ function RentModal({ }: Props) {
     setVerifications(verifications);
   };
 
-  // Updated handler to receive both predefined and custom amenities
   const handleAmenitiesChange = (updatedAmenities: { predefined: { [key: string]: boolean }, custom: string[] }) => {
     setSelectedAmenities(updatedAmenities);
   };
@@ -351,11 +350,18 @@ function RentModal({ }: Props) {
           title="Select the add-ons, if available at your property"
           subtitle="Additional chargeable services/facilities"
         />
-        <AddonsSelection addons={addons} initialSelectedAddons={[]} onSelectedAddonsChange={handleAddonChange} />
-        <CustomAddonModal save={(value: any) => { addons.push(value); setAddons(addons); }} />
+        <AddonsSelection
+          addons={addons}
+          initialSelectedAddons={selectedAddons}
+          onSelectedAddonsChange={handleAddonChange}
+        />
+        <CustomAddonModal
+          save={(value: any) => setAddons([...addons, value])}
+        />
       </div>
     );
   }
+
 
   if (step === STEPS.OTHERDETAILS) {
     bodyContent = (
@@ -399,7 +405,7 @@ function RentModal({ }: Props) {
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       onClose={rentModel.onClose}
       selfActionButton={false}
-      autoWidth={step === STEPS.VERIFICATION ? true : false}
+      autoWidth={step === STEPS.VERIFICATION || step === STEPS.ADDONS ? true : false}
       customWidth={step === STEPS.VERIFICATION ? 'w-1/2' : ''}
       body={bodyContent}
       verificationBtn={step === STEPS.TERMS}

@@ -32,17 +32,24 @@ const AmenitiesCheckbox: React.FC<AmenitiesCheckboxProps> = ({
   const [amenitiesList, setAmenitiesList] = useState<string[]>(customAmenities);
 
   useEffect(() => {
-    setAmenitiesList(customAmenities);
-  }, [customAmenities]);
+    if (customAmenities.join() !== amenitiesList.join()) {
+      const timer = setTimeout(() => {
+        setAmenitiesList(customAmenities);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [customAmenities, amenitiesList]);
 
   const triggerOnChange = (
     updatedPredefined: { [key: number | string]: boolean },
     updatedCustom: string[]
   ) => {
-    onChange({
-      predefined: updatedPredefined,
-      custom: updatedCustom,
-    });
+    setTimeout(() => {
+      onChange({
+        predefined: updatedPredefined,
+        custom: updatedCustom,
+      });
+    }, 0);
   };
 
   const handleCheckboxChange = (id: number | string) => {

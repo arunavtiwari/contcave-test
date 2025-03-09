@@ -93,9 +93,12 @@ function ListingCard({
             <div className="font-semibold text-lg">
               {data.title}
             </div>
-            <div className="font-semibold text-md flex items-center gap-1.5">
-              <FaStar size={18} color="gold" /> 5.0
-            </div>
+            {data.avgReviewRating && data.avgReviewRating != 0 && (
+              <div className="font-semibold text-md flex items-center gap-1.5">
+                <FaStar size={18} color="gold" /> {data.avgReviewRating?.toFixed(1)}
+              </div>
+            )}
+
           </div>
           <div className="font-light text-neutral-500">
             {data.category} | {location?.label}

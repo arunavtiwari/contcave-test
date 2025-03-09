@@ -1,19 +1,11 @@
-"use client";
-
-import ClientOnly from "@/components/ClientOnly";
 import Container from "@/components/Container";
 import React from "react";
-import getCurrentUser from "../actions/getCurrentUser";
-
-export const dynamic = "force-dynamic";
 
 type Props = {};
 
 const TermsAndConditions = async (props: Props) => {
-    const currentUser = await getCurrentUser();
-
     return (
-        <ClientOnly>
+        <>
             <div className="banner">
                 <img
                     src="/assets/footer-banner.jpg"
@@ -25,7 +17,7 @@ const TermsAndConditions = async (props: Props) => {
             </div>
 
             <Container>
-                <div className="pt-10 pb-60">
+                <div className="pt-10">
                     <div className="container mx-auto mt-8 p-8 bg-white shadow-lg space-y-6">
                         <h2 className="text-2xl font-bold text-gray-800">
                             Terms & Conditions
@@ -117,7 +109,7 @@ const TermsAndConditions = async (props: Props) => {
                     </div>
                 </div>
             </Container>
-        </ClientOnly>
+        </>
     );
 };
 

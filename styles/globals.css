@@ -181,6 +181,8 @@ input[type="text"]:focus {
 	transform: translateX(-50%) !important;
 	position: fixed !important;
 	width: max-content;
+	height: fit-content !important;
+	overflow: hidden;
 }
 
 .Toastify__toast {
@@ -192,7 +194,7 @@ input[type="text"]:focus {
 }
 
 .Toastify__close-button {
-	align-self: center !important;
+	display: none !important;
 }
 
 .hide-scrollbar {

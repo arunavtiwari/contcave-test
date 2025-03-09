@@ -14,6 +14,7 @@ import Image from "next/image";
 import axios from "axios";
 import getAddons from "@/app/actions/getAddons";
 import { useRouter } from "next/navigation";
+import { FaStar } from "react-icons/fa6";
 
 const Map = dynamic(() => import("../Map"), {
   ssr: false,
@@ -62,7 +63,7 @@ function ListingInfo({
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => setIsExpanded((prev) => !prev);
 
-  const limit = 200;
+  const limit = 250;
   const shouldTruncate = description.length > limit;
   const displayedText = isExpanded || !shouldTruncate
     ? description
@@ -109,11 +110,16 @@ function ListingInfo({
 
   return (
     <div className="col-span-4 flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
+      <div className="flex gap-2 justify-between">
         <div className="text-xl font-semibold flex flex-row items-center gap-2">
           <div>Hosted by {user?.name}</div>
           <Avatar src={user?.image} userName={user?.name} />
         </div>
+        {fullListing.avgReviewRating && fullListing.avgReviewRating != 0 && (
+          <div className="font-semibold text-md flex items-center gap-1.5">
+            <FaStar size={18} color="gold" /> {fullListing.avgReviewRating.toFixed(1)}
+          </div>
+        )}
       </div>
 
       <hr />
@@ -261,46 +267,47 @@ function ListingInfo({
       <hr />
 
       {/* Reviews */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold">Reviews</div>
-          <div className="text-lg font-bold"><span className="pr-2">{reviews.length}</span> Ratings</div>
+          <p className="text-xl font-semibold">Reviews</p>
+          <p className="text-lg font-semibold"><span className="pr-1">{reviews.length}</span> Ratings</p>
         </div>
-        <div className="relative space-y-8">
-          {reviews.map((review: any) => (
-            <div className="flex" key={review.id}>
-              <div className="w-16 h-16">
-                {
-                  review && review.user?.image && (
-                    <Avatar src={review.user?.image} userName={review.user?.name} />
 
-                  )
-                }
-
-                {
-                  review && !review.user?.image && (
-                    <Image src="/assets/user-review.svg" height={64} width={64} alt="" className="w-full h-full object-cover"
-
-                    />
-                  )
-                }
-
-              </div>
-              <div className="w-[calc(100%-64px)] pl-4">
-                <div className="text-base font-bold">{review.user.name}</div>
-                <div className="space-x-2 flex">
-                  {[...Array(5)].map((_, i) => (
-                    <IoIosStar key={i} size={18} color={i < review.rating ? "#FFD700" : "#e4e5e9"} />
-                  ))}
+        {review && (
+          <>
+            <div className="flex flex-col relative gap-4 pb-4">
+              {reviews.map((review: any) => (
+                <div className="flex items-center p-5 shadow-md rounded-2xl border" key={review.id}>
+                  <div className="h-fit">
+                    <Avatar src={review.user?.image} userName={review.user?.name} size={45} />
+                  </div>
+                  <div className="pl-4 flex flex-col w-full">
+                    <div className="flex justify-between items-center">
+                      <div className="text-base font-bold">{review.user.name}</div>
+                      <div className="flex h-fit">
+                        {[...Array(5)].map((_, i) => (
+                          <IoIosStar key={i} size={20} color={i < review.rating ? "#FFD700" : "#e4e5e9"} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="">
+                      <p>{review.comment}</p>
+                    </div>
+                    <div className="text-sm text-neutral-500"> {new Date(review.createdAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm mt-2">
-                  <p>{review.comment}</p>
-                </div>
-                <div className="text-xs italic mt-2">{new Date(review.createdAt).toLocaleDateString('en-GB')}</div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+            <hr />
+          </>
+        )
+        }
+
         {canReview && (
           <div className="flex flex-col gap-4">
             <div className="text-xl capitalize font-semibold">Submit your review</div>

@@ -3,6 +3,7 @@ import getCurrentUser from "../actions/getCurrentUser";
 import EmptyState from "@/components/EmptyState";
 import ProfileTransactionClient from "./ProfileTransactionClient";
 export const dynamic = "force-dynamic"
+import Container from '@/components/Container';
 
 type Props = {};
 
@@ -17,9 +18,11 @@ const ProfileTransaction = async (props: Props) => {
     );
   }
   return (
-    <ClientOnly>
-      <ProfileTransactionClient profile={currentUser} />
-    </ClientOnly>
+    <Container>
+      <ClientOnly>
+        <ProfileTransactionClient profile={currentUser} />
+      </ClientOnly>
+    </Container>
   );
 };
 

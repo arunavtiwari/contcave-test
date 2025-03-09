@@ -1,18 +1,15 @@
 "use client";
-
-import ClientOnly from "@/components/ClientOnly";
-import Container from "@/components/Container";
 import React from "react";
 import Image from "next/image";
-import getCurrentUser from "../actions/getCurrentUser";
-import { useRouter } from "next/navigation";
 import { useState } from 'react';
+import Heading from "@/components/Heading";
+import Sidebar from "@/components/Sidebar";
 
 type Props = {};
 
 const ProfileShareClient = ({ profile }) => {
-  const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("Share and Refer");
 
   const handleCopy = () => {
     const textToCopy = "This is the text to copy";
@@ -25,25 +22,13 @@ const ProfileShareClient = ({ profile }) => {
   };
   return (
 
-    <div className="flex py-10">
-      <div className="w-14 sticky top-50 flex flex-col items-center justify-center h-max p-4 rounded-full space-y-10 bg-[#12121291] backdrop-blur-xl ms-3">
-        <div className="flex items-center justify-center cursor-pointer" onClick={() => router.push("/Profile")}>
-          <Image src="/assets/user-white.svg" width={25} height={25} alt="" className="object-contain" />
-        </div>
-        <div className="flex items-center justify-center cursor-pointer" onClick={() => router.push("/payment-details")}>
-          <Image src="/assets/faCreditCard.svg" width={25} height={25} alt="" className="object-contain" />
-        </div>
-        <div className="flex items-center justify-center cursor-pointer" onClick={() => router.push("/profile-share")}>
-          <Image src="/assets/faUserPlus-black.svg" width={25} height={25} alt="" className="object-contain" />
-        </div>
-        <div className="flex items-center justify-center cursor-pointer" onClick={() => router.push("/profile-settings")}>
-          <Image src="/assets/faSettings.svg" width={25} height={25} alt="" className="object-contain" />
-        </div>
-      </div>
-      <div className="xl:w-[calc(100%-80px)] lg:w-[calc(100%-80px)] md:w-[calc(100%-80px)] w-[calc(100%-64px)] xl:px-10 lg:px-10 md:px-6 px-6">
-        <h2 className="xl:text-center lg:text-center md:text-center text-left xl:text-3xl text-xl text-slate-950 font-bold mb-10">Share with Friends and Earn Rewards  🙌</h2>
-        <p className="text-base text-slate-600 font-medium mb-8">Refer your friends to ContCave and both of you can earn
-          rewards.</p>
+    <div className="flex">
+      {/* Sidebar */}
+      <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} menuType="profile" />
+
+      <div className="flex flex-col sm:p-8 sm:pt-12 w-full gap-5 sm:border-l-2 border-gray-200">
+        <Heading title="Share with Friends and Earn Rewards 🙌" subtitle="Refer your friends to ContCave and both of you can earn
+          rewards"></Heading>
         <div className="space-y-12">
           <div className="relative">
             <div className="text-base font-semibold text-slate-950">How It Works:</div>
