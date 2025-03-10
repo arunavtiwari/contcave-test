@@ -12,7 +12,7 @@ model User {
   name             String?
   email            String?           @unique
   phone            String?
-  language         String?
+  languages        String[]          @default([])
   location         String?
   description      String?
   profileImage     String?

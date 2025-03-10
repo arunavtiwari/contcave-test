@@ -53,8 +53,8 @@ function ImageUpload({
   return (
     <label
       htmlFor="file-upload"
-      className={`relative cursor-pointer hover:opacity-85 transition border-dashed border-2 border-neutral-300 flex flex-col justify-center items-center text-neutral-600 ${circle ? "rounded-full" : "rounded-xl"
-        } ${circle ? "w-24 h-24" : "w-32 h-32 p-2"}`}
+      className={`relative cursor-pointer hover:opacity-85 transition border-dashed flex flex-col justify-center items-center text-neutral-600 ${circle ? "rounded-full" : "rounded-xl"
+        } ${circle ? "w-full h-full" : "w-32 h-32 p-2 border-2 border-neutral-300"}`}
     >
       {uploading ? (
         <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>

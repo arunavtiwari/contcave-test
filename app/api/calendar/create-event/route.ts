@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { google } from 'googleapis';
 
 export async function POST(request: Request) {
@@ -18,10 +18,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Check if the provided dates are all-day (i.e. no time info)
   const isAllDay = !start.includes('T') && !end.includes('T');
 
-  // Construct event object accordingly
   const event = {
     summary: title,
     start: isAllDay

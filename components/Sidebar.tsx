@@ -29,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedMenu, setSelectedMenu, listin
         {
             name: "Manage Payments",
             icon: <Image src="/assets/faCreditCard-black.svg" width={22} height={22} alt="Payment Details" className="object-contain" />,
-            path: "/payment-details",
+            path: "/profile-transaction",
         },
         {
             name: "Share and Refer",
