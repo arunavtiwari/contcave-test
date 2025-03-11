@@ -1,4 +1,3 @@
-import ClientOnly from "@/components/ClientOnly";
 import Footer from "@/components/Footer";
 import ToastContainerBar from "@/components/ToastContainerBar";
 import LoginModal from "@/components/modals/LoginModal";
@@ -82,21 +81,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-
-        <ClientOnly>
-          <ToastContainerBar />
-          <SearchModal />
-          <RegisterModal />
-          <LoginModal />
-          <OwnerRegisterModal />
-          <RentModal />
-          <Navbar currentUser={currentUser} />
-          <CookieConsent />
-        </ClientOnly>
+        <ToastContainerBar />
+        <SearchModal />
+        <RegisterModal />
+        <LoginModal />
+        <OwnerRegisterModal />
+        <RentModal />
+        <Navbar currentUser={currentUser} />
+        <CookieConsent />
         <div className="min-h-[100vh] pt-[84px]">{children}</div>
         <ScrollToTop />
         <Footer />
-
       </body>
     </html>
   );

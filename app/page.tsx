@@ -1,5 +1,4 @@
 import Blog from "@/components/Blog";
-import ClientOnly from "@/components/ClientOnly";
 import Contact from "@/components/Contact";
 import CTA from "@/components/CTA";
 import Cover from "@/components/Cover";
@@ -13,18 +12,16 @@ import "./landing.css";
 export default async function Home() {
 
   return (
-    <ClientOnly>
-      <main>
-        <Hero />
-        <Feature />
-        <FeaturesTab />
-        <FunFact />
-        <FAQ />
-        <CTA />
-        {/* <Cover /> */}
-        {/* <Contact /> */}
-        {/* <Blog/> */}
-      </main>
-    </ClientOnly>
+    <main>
+      <Hero />
+      <Feature />
+      <FeaturesTab />
+      <FunFact />
+      <FAQ />
+      <CTA />
+      {/* <Cover /> */}
+      {/* <Contact /> */}
+      {/* <Blog/> */}
+    </main>
   );
 }
