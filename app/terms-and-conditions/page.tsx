@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import Image from "next/image";
 import React from "react";
 
 type Props = {};
@@ -7,7 +8,7 @@ const TermsAndConditions = (props: Props) => {
     return (
         <>
             <div className="banner">
-                <img src="/assets/footer-banner.jpg" alt="Banner Image" />
+                <Image src="/assets/footer-banner.jpg" fill alt="Banner Image" />
                 <div className="overlay">
                     <h1 className="banner-text">Terms & Conditions</h1>
                 </div>
