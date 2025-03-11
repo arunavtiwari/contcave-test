@@ -17,7 +17,7 @@ export const metadata = {
   metadataBase: new URL("https://www.contcave.com"),
   title: "ContCave | Find the Perfect Shoot Space with Ease",
   description:
-    "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
+    "Book the ideal shoot space for your next project on ContCave – the leading platform for creative studio and event space rentals.",
   icons: "https://i.ibb.co/4JdrGHS/Screenshot-2023-11-22-at-3-52-33-AM.png",
   keywords: [
     "studio booking",
@@ -29,23 +29,42 @@ export const metadata = {
     "photography studio rental",
     "video production space",
     "book studio",
+    "photo studio hire",
+    "event space rental",
+    "shoot location"
   ],
   authors: [{ name: "ContCave" }],
+  robots: "index, follow",
+  canonical: "https://www.contcave.com",
   openGraph: {
     title: "ContCave | Find the Perfect Shoot Space with Ease",
     description:
-      "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
+      "Book the ideal shoot space for your next project on ContCave – the leading platform for creative studio and event space rentals.",
     url: "https://www.contcave.com",
+    siteName: "ContCave",
     type: "website",
-    images: "/images/logo/logo-dark.png",
+    images: [
+      {
+        url: "https://www.contcave.com/images/logo/logo-dark.png",
+        width: 1200,
+        height: 630,
+        alt: "ContCave Logo"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
     title: "ContCave | Find the Perfect Shoot Space with Ease",
     description:
-      "Discover and book the ideal shoot space for your next project on ContCave, the leading marketplace for creative space rentals.",
-    images: "/images/logo/logo-dark.png",
-  },
+      "Book the ideal shoot space for your next project on ContCave – the leading platform for creative studio and event space rentals.",
+    site: "@ContCave",
+    images: [
+      {
+        url: "https://www.contcave.com/images/logo/logo-dark.png",
+        alt: "ContCave Logo"
+      }
+    ]
+  }
 };
 
 
