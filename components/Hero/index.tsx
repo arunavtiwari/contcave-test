@@ -2,11 +2,8 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
-
-
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,7 +60,7 @@ const Hero = () => {
               onClick={() => router.push('/home')}
               className="bg-white mt-10 w-fit text-black px-6 py-2.5 rounded-full font-semibold text-lg shadow-md hover:scale-105 duration-300 relative z-20"
             >
-              Explore now
+              Book Now
             </button>
           </div>
         </div>

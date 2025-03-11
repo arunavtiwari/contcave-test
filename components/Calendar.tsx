@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -9,6 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import Modal from './modals/Modal';
 import axios from "axios";
+
 interface Event {
     id: string;
     title: string;
@@ -24,7 +25,7 @@ interface CalendarProps {
     listingId: string;
 }
 
-export default function Calendar({ operationalStart, operationalEnd, listingId}: CalendarProps) {
+export default function Calendar({ operationalStart, operationalEnd, listingId }: CalendarProps) {
     const { data: session } = useSession();
     const [events, setEvents] = useState<Event[]>([]);
     const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
@@ -98,13 +99,7 @@ export default function Calendar({ operationalStart, operationalEnd, listingId}:
 
     const businessDays = getBusinessDays(operationalStart, operationalEnd);
 
-    useEffect(() => {
-        if (session) {
-            fetchEvents();
-        }
-    }, [session]);
-
-    const fetchEvents = async () => {
+    const fetchEvents = useCallback(async () => {
         try {
             const res = await axios.get("/api/calendar/events", {
                 params: { listingId: listingId },
@@ -132,7 +127,13 @@ export default function Calendar({ operationalStart, operationalEnd, listingId}:
         } catch (error) {
             console.error('Error fetching events:', error);
         }
-    };
+    }, [listingId, businessDays]);
+
+    useEffect(() => {
+        if (session) {
+            fetchEvents();
+        }
+    }, [session, fetchEvents]);
 
     const handleEventClick = (clickInfo: any) => {
         setModalData({
@@ -187,7 +188,6 @@ export default function Calendar({ operationalStart, operationalEnd, listingId}:
                         endTime: '24:00',
                     }}
                 />
-
             </div>
 
             <Modal
