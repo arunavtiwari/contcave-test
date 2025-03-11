@@ -110,10 +110,4 @@ const TermsAndConditions = (props: Props) => {
     );
 };
 
-export const getStaticProps = async () => {
-    return {
-        props: {},
-    };
-};
-
 export default TermsAndConditions;

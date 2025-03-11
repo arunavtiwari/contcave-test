@@ -82,10 +82,4 @@ const PrivacyPolicy = (props: Props) => {
     );
 };
 
-export const getStaticProps = async () => {
-    return {
-        props: {},
-    };
-};
-
 export default PrivacyPolicy;
