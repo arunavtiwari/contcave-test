@@ -19,6 +19,7 @@ import Calendar from '@/components/Calendar';
 import { SessionProvider, signIn } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import ManageTimings from './ManageTimings';
+import { MdOutlineCurrencyRupee } from "react-icons/md";
 
 type Props = {
     listing: any;
@@ -215,14 +216,28 @@ const PropertyClient = ({ listing, predefinedAmenities, predefinedAddons }: Prop
                             <label className="block text-sm font-medium text-gray-700 sm:w-1/3">
                                 Price
                             </label>
-                            <input
-                                type="number"
-                                id="listingPrice"
-                                className="border rounded-full py-2 shadow-sm w-full"
-                                placeholder="Price"
-                                value={initialListing.price}
-                                onChange={(e) => handleInputChange("price", Number(e.target.value))}
-                            />
+                            <div className="w-full relative">
+                                <MdOutlineCurrencyRupee
+                                    size={24}
+                                    className="
+                                        text-neutral-700
+                                        absolute
+                                        top-2.5
+                                        left-2
+                                        border-r
+                                        pr-1
+                                        border-neutral-300
+                                      "
+                                />
+                                <input
+                                    type="number"
+                                    id="listingPrice"
+                                    className="border rounded-full py-2 shadow-sm w-full pl-10 focus:border-black"
+                                    placeholder="Price"
+                                    value={initialListing.price}
+                                    onChange={(e) => handleInputChange("price", Number(e.target.value))}
+                                />
+                            </div>
                         </div>
                         {/* Location */}
                         <div className="flex sm:items-center gap-1 sm:gap-10 flex-col sm:flex-row">

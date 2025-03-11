@@ -4,7 +4,7 @@ import useRentModal from "@/hook/useRentModal";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -48,14 +48,13 @@ function RentModal({ }: Props) {
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [isLoading, setIsLoading] = useState(false);
   const [amenities, setAmenities] = useState<Amenities[]>([]);
-  const [listingDetails, setListigDetails] = useState<ListingDetails>();
+  const [listingDetails, setListingDetails] = useState<ListingDetails>();
 
   const [customAmenities, setCustomAmenities] = useState<CustomAmenities[]>([]);
   const [verifications, setVerifications] = useState();
   const [terms, setTerms] = useState(Boolean);
   const [addons, setAddons] = useState<any[]>([]);
 
-  // Updated selectedAmenities state to store both predefined and custom amenities
   const [selectedAmenities, setSelectedAmenities] = useState<{
     predefined: { [key: string]: boolean },
     custom: string[]
@@ -79,7 +78,7 @@ function RentModal({ }: Props) {
   };
 
   const handleDetailsChange = (newDetails: ListingDetails) => {
-    setListigDetails(newDetails);
+    setListingDetails(newDetails);
   };
 
   useEffect(() => {
@@ -138,13 +137,14 @@ function RentModal({ }: Props) {
     [location]
   );
 
-  const setCustomValue = (id: string, value: any) => {
+  const setCustomValue = useCallback((id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-  };
+  }, [setValue]);
+
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -157,6 +157,10 @@ function RentModal({ }: Props) {
     }
     if (step === STEPS.LOCATION && !location) {
       toast.error("Please Add the Location", { toastId: "Location" });
+      return;
+    }
+    if (step === STEPS.IMAGES && (!imageSrc || imageSrc.length === 0)) {
+      toast.error("Please upload at least one image", { toastId: "ImageUpload" });
       return;
     }
     setStep((value) => value + 1);
@@ -286,29 +290,27 @@ function RentModal({ }: Props) {
 
   if (step === STEPS.DESCRIPTION) {
     bodyContent = (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
         <Heading
           title="Your Property Details"
           subtitle="Set an inviting title and subtitle for your property"
         />
-        <div>
-          <Input
-            id="title"
-            label="Title"
-            disabled={isLoading}
-            register={register("title", { required: "Name of your property" })}
-            errors={errors}
-            required
-          />
-          <Input
-            id="description"
-            label="Description"
-            disabled={isLoading}
-            register={register("Description", { required: "Describe your property" })}
-            errors={errors}
-            required
-          />
-        </div>
+        <Input
+          id="title"
+          label="Title"
+          disabled={isLoading}
+          register={register("title", { required: "Name of your property" })}
+          errors={errors}
+          required
+        />
+        <Input
+          id="description"
+          label="Description"
+          disabled={isLoading}
+          register={register("description", { required: "Describe your property" })}
+          errors={errors}
+          required
+        />
       </div>
     );
   }
@@ -323,7 +325,7 @@ function RentModal({ }: Props) {
           formatPrice
           type="number"
           disabled={isLoading}
-          register={register("Price", { required: "Price of your property" })}
+          register={register("price", { required: "Price of your property" })}
           errors={errors}
           required
         />

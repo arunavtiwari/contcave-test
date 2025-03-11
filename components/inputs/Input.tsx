@@ -31,8 +31,11 @@ function Input({
           className="
             text-neutral-700
             absolute
-            top-5
+            top-2.5
             left-2
+            border-r
+            pr-1
+            border-neutral-300
           "
         />
       )}
@@ -42,7 +45,7 @@ function Input({
         {...register}
         placeholder={label}
         type={type}
-        className={`peer w-full font-light bg-white border-2 rounded-full outline-none transition disabled:opacity-70 disabled:cursor-not-allowed ${formatPrice ? "pl-9" : "pl-4"
+        className={`peer w-full font-light bg-white border-2 rounded-full outline-none transition disabled:opacity-70 disabled:cursor-not-allowed py-2.5 ${formatPrice ? "pl-10" : "pl-4"
           } ${errors[id] ? "border-rose-500" : "border-neutral-300"} ${errors[id] ? "focus:border-rose-500" : "focus:border-black"
           }`}
       />

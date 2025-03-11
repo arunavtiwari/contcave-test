@@ -100,7 +100,7 @@ function Modal({
 
               {/* Body */}
               <div className="overflow-y-auto max-h-[calc(100vh-20px)]">
-                <div className={`flex-auto p-4 relative ${fixedHeight ? ' overflow-y-auto ' : ''}`}>{body}</div>
+                <div className={`flex-auto p-6 relative ${fixedHeight ? ' overflow-y-auto ' : ''}`}>{body}</div>
                 {!selfActionButton && (
                   <div className={`flex flex-col gap-2 ${!verificationBtn ? 'p-6 pt-2' : 'p-6 pt-0'}`}>
                     {

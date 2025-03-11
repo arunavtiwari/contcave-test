@@ -29,7 +29,7 @@ function CitySelect({ value, onChange }: Props) {
         value={value}
         onChange={(value) => onChange(value as CitySelectValue)}
         formatOptionLabel={(option: any) => (
-          <div className="flex flex-row items-center gap-3">
+          <div className="flex flex-row items-center gap-3 cursor-pointer">
             <Flag code={option.value} className="w-5" />
             <div>
               {option.label}
@@ -38,9 +38,9 @@ function CitySelect({ value, onChange }: Props) {
           </div>
         )}
         classNames={{
-          control: () => "p-1 border-2",
-          input: () => "text-lg",
-          option: () => "text-lg",
+          control: () => "py-0.5 border-2",
+          input: () => "text-lg cursor-pointer",
+          option: () => "text-lg cursor-pointer",
         }}
         theme={(theme) => ({
           ...theme,

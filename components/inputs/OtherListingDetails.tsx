@@ -1,4 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { FaBolt } from 'react-icons/fa';
+import Select from 'react-select';
+import ReactSwitch from 'react-switch';
 
 export type ListingDetails = {
     carpetArea: string;
@@ -11,11 +14,10 @@ export type ListingDetails = {
 };
 
 type Props = {
-    onDetailsChange: (details: ListingDetails) => void; // Callback function for parent component
+    onDetailsChange: (details: ListingDetails) => void;
 };
 
 const OtherListingDetails: React.FC<Props> = ({ onDetailsChange }) => {
-    // Initialize state for all the input fields
     const [details, setDetails] = useState<ListingDetails>({
         carpetArea: '',
         operationalDays: { start: '', end: '' },
@@ -26,12 +28,10 @@ const OtherListingDetails: React.FC<Props> = ({ onDetailsChange }) => {
         selectedTypes: [],
     });
 
-    // Call parent's callback after state updates (runs after render)
     useEffect(() => {
         onDetailsChange(details);
     }, [details, onDetailsChange]);
 
-    // Function to handle input changes and update the state
     const handleInputChange = useCallback((field: keyof ListingDetails, value: any) => {
         setDetails((prevDetails) => ({
             ...prevDetails,
@@ -39,7 +39,6 @@ const OtherListingDetails: React.FC<Props> = ({ onDetailsChange }) => {
         }));
     }, []);
 
-    // Function to handle type selection
     const handleTypeSelect = (type: string) => {
         setDetails((prevDetails) => {
             const newSelectedTypes = prevDetails.selectedTypes.includes(type)
@@ -49,191 +48,198 @@ const OtherListingDetails: React.FC<Props> = ({ onDetailsChange }) => {
         });
     };
 
-    // Define types for the chips
     const types = [
-        "Fashion shoot",
-        "Product shoot",
-        "Podcast",
-        "Recording Studio",
-        "Film Shoot",
-        "Outdoor Event",
-        "Content shoot",
-        "Pre-Wedding",
-        "Meetings",
-        "Workshops",
-        "Photo Shoot",
+        "Fashion shoot", "Product shoot", "Podcast", "Recording Studio",
+        "Film Shoot", "Outdoor Event", "Content shoot", "Pre-Wedding",
+        "Meetings", "Workshops", "Photo Shoot"
+    ];
+
+    const dayOptions = [
+        { value: 'Mon', label: 'Monday' },
+        { value: 'Tue', label: 'Tuesday' },
+        { value: 'Wed', label: 'Wednesday' },
+        { value: 'Thu', label: 'Thursday' },
+        { value: 'Fri', label: 'Friday' },
+        { value: 'Sat', label: 'Saturday' },
+        { value: 'Sun', label: 'Sunday' },
     ];
 
     return (
-        <div className="otherListingWrapper">
+        <div className="space-y-4">
+            {/* Property Specifications */}
+            <div className="flex justify-between items-center">
+                <label className="text-sm font-medium w-[40vw]">
+                    <strong>PROPERTY SPECIFICATIONS</strong>
+                    <br />
+                    Carpet Area
+                </label>
+                <input
+                    type="text"
+                    placeholder="290 sqft"
+                    className="border py-2 rounded-full w-1/3 text-center"
+                    value={details.carpetArea}
+                    onChange={(e) => handleInputChange('carpetArea', e.target.value)}
+                />
+            </div>
+
+            <hr />
+
+            {/* Timings */}
             <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium mb-1 w-3/3">
-                        <strong>PROPERTY SPECIFICATIONS</strong>
+                <div className="flex items-center">
+                    <label className="font-medium text-sm w-[40vw]">
+                        <strong>TIMINGS</strong>
                         <br />
-                        Carpet Area
+                        Operational Days
                     </label>
+                    <div className="flex items-center space-x-2 justify-end w-full">
+                        <Select
+                            options={dayOptions}
+                            value={dayOptions.find((day) => day.value === details.operationalDays.start)}
+                            onChange={(selected) =>
+                                handleInputChange('operationalDays', { ...details.operationalDays, start: selected?.value || '' })
+                            }
+                            placeholder="Start Day"
+                            classNames={{
+                                input: () => "text-lg cursor-pointer",
+                                option: () => "text-lg cursor-pointer",
+                            }}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 10,
+                                colors: {
+                                    ...theme.colors,
+                                    primary: "black",
+                                    primary25: "#F3F4F6",
+                                    primary50: "#E5E7EB",
+                                },
+                            })}
+                        />
+                        <span>-</span>
+                        <Select
+                            options={dayOptions}
+                            value={dayOptions.find((day) => day.value === details.operationalDays.end)}
+                            onChange={(selected) =>
+                                handleInputChange('operationalDays', { ...details.operationalDays, end: selected?.value || '' })
+                            }
+                            placeholder="End Day"
+                            classNames={{
+                                input: () => "text-lg cursor-pointer",
+                                option: () => "text-lg cursor-pointer",
+                            }}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 10,
+                                colors: {
+                                    ...theme.colors,
+                                    primary: "black",
+                                    primary25: "#F3F4F6",
+                                    primary50: "#E5E7EB",
+                                },
+                            })}
+                        />
+                    </div>
+                </div>
+
+                <div className="flex items-center">
+                    <label className="font-medium text-sm w-[40vw]">Opening Hours</label>
                     <div className="flex items-center space-x-2 justify-end">
                         <input
                             type="text"
-                            placeholder="290 sqft"
-                            className="border py-1 pr-3 rounded w-[177px] text-end"
-                            value={details.carpetArea}
-                            onChange={(e) => handleInputChange('carpetArea', e.target.value)}
+                            placeholder="AM"
+                            className="border rounded-full w-30 py-2 text-center"
+                            value={details.operationalHours.start}
+                            onChange={(e) =>
+                                handleInputChange('operationalHours', { ...details.operationalHours, start: e.target.value })
+                            }
                         />
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="space-y-4">
-                    <div className="flex items-center">
-                        <label className="font-medium text-sm w-[40vw]">
-                            <strong>TIMINGS</strong>
-                            <br />
-                            Operational Days
-                        </label>
-                        <div className="flex items-center space-x-2 justify-end">
-                            <input
-                                type="text"
-                                placeholder="Mon"
-                                className="border rounded w-30 py-1 text-center"
-                                value={details.operationalDays.start}
-                                onChange={(e) =>
-                                    handleInputChange('operationalDays', { ...details.operationalDays, start: e.target.value })
-                                }
-                                list="days"
-                            />
-                            <datalist id="days">
-                                <option value="Mon" />
-                                <option value="Tue" />
-                                <option value="Wed" />
-                                <option value="Thu" />
-                                <option value="Fri" />
-                                <option value="Sat" />
-                                <option value="Sun" />
-                            </datalist>
-                            <span>-</span>
-                            <input
-                                type="text"
-                                placeholder="Sun"
-                                className="border rounded w-30 py-1 text-center"
-                                value={details.operationalDays.end}
-                                onChange={(e) =>
-                                    handleInputChange('operationalDays', { ...details.operationalDays, end: e.target.value })
-                                }
-                                list="days"
-                            />
-                            <datalist id="days">
-                                <option value="Mon" />
-                                <option value="Tue" />
-                                <option value="Wed" />
-                                <option value="Thu" />
-                                <option value="Fri" />
-                                <option value="Sat" />
-                                <option value="Sun" />
-                            </datalist>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center">
-                        <label className="font-medium text-sm w-[40vw]">Opening Hours</label>
-                        <div className="flex items-center space-x-2 justify-end">
-                            <input
-                                type="text"
-                                placeholder="AM"
-                                className="border rounded w-30 py-1 text-center"
-                                value={details.operationalHours.start}
-                                onChange={(e) =>
-                                    handleInputChange('operationalHours', { ...details.operationalHours, start: e.target.value })
-                                }
-                            />
-                            <span>-</span>
-                            <input
-                                type="text"
-                                placeholder="PM"
-                                className="border rounded w-30 py-1 text-center"
-                                value={details.operationalHours.end}
-                                onChange={(e) =>
-                                    handleInputChange('operationalHours', { ...details.operationalHours, end: e.target.value })
-                                }
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center">
-                        <label className="font-medium text-sm w-[40vw]">Minimum Booking Hours</label>
+                        <span>-</span>
                         <input
                             type="text"
-                            placeholder="2 hrs"
-                            className="border rounded w-1/3 py-1 pr-3 text-end"
-                            value={details.minimumBookingHours}
-                            onChange={(e) => handleInputChange('minimumBookingHours', e.target.value)}
+                            placeholder="PM"
+                            className="border rounded-full w-30 py-2 text-center"
+                            value={details.operationalHours.end}
+                            onChange={(e) =>
+                                handleInputChange('operationalHours', { ...details.operationalHours, end: e.target.value })
+                            }
                         />
                     </div>
                 </div>
 
-                <hr />
-
-                <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium mb-1 w-[40vw]">
-                        <strong>ACCOMMODATION</strong>
-                        <br />
-                        Maximum Pax
-                    </label>
+                <div className="flex items-center">
+                    <label className="font-medium text-sm w-[40vw]">Minimum Booking Hours</label>
                     <input
                         type="text"
-                        placeholder="6 people"
-                        className="border rounded w-1/3 py-1 pr-3 text-end"
-                        value={details.maximumPax}
-                        onChange={(e) => handleInputChange('maximumPax', e.target.value)}
+                        placeholder="2 hrs"
+                        className="border rounded-full w-1/3 py-2 pr-3 text-center"
+                        value={details.minimumBookingHours}
+                        onChange={(e) => handleInputChange('minimumBookingHours', e.target.value)}
                     />
                 </div>
+            </div>
 
-                <hr />
+            <hr />
 
-                <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium mb-1 w-[40vw]">
-                        <strong>BOOKING</strong>
-                        <br />
-                        Instant Book
-                    </label>
-                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                        <input
-                            type="checkbox"
-                            name="toggle"
-                            id="toggle"
-                            checked={details.instantBook}
-                            onChange={(e) => handleInputChange('instantBook', e.target.checked)}
-                            className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                        />
-                        <label
-                            htmlFor="toggle"
-                            className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-                        ></label>
-                    </div>
-                </div>
+            {/* Accommodation */}
+            <div className="flex justify-between items-center">
+                <label className="text-sm font-medium w-[40vw]">
+                    <strong>ACCOMMODATION</strong>
+                    <br />
+                    Maximum Pax
+                </label>
+                <input
+                    type="text"
+                    placeholder="6 people"
+                    className="border rounded-full w-1/3 py-2 pr-3 text-center"
+                    value={details.maximumPax}
+                    onChange={(e) => handleInputChange('maximumPax', e.target.value)}
+                />
+            </div>
 
-                <hr />
+            <hr />
 
-                <div className="justify-between items-center">
-                    <label className="text-sm font-medium mb-1 w-[40vw]">
-                        <strong>TYPE</strong>
-                    </label>
-                    <div className="flex flex-wrap gap-2 w-100 mt-2">
-                        {types.map((type) => (
-                            <button
-                                key={type}
-                                onClick={() => handleTypeSelect(type)}
-                                className={`${details.selectedTypes.includes(type)
-                                    ? 'bg-rose-500 text-white'
-                                    : 'bg-gray-200 text-gray-800'
-                                    } text-sm py-1 px-3 rounded-full focus:outline-none focus:shadow-outline`}
-                            >
-                                {type}
-                            </button>
-                        ))}
-                    </div>
+            {/* Booking */}
+            <div className="flex justify-between items-center">
+                <label className="text-sm font-medium mb-1 w-[40vw]">
+                    <strong>BOOKING</strong>
+                    <br />
+                    Instant Book
+                </label>
+                <ReactSwitch
+                    checked={details.instantBook}
+                    onChange={(checked) => handleInputChange('instantBook', checked)}
+                    offColor="#d1d5db"
+                    onColor="#000"
+                    uncheckedIcon={false}
+                    offHandleColor="#000"
+                    activeBoxShadow="0 0 2px 3px #000"
+                    checkedIcon={false}
+                    height={30}
+                    handleDiameter={20}
+                    checkedHandleIcon={<FaBolt color='#FFD700' className='w-full h-full py-[2px]' />}
+                />
+            </div>
+
+            <hr />
+
+            {/* Type */}
+            <div className="justify-between items-center">
+                <label className="text-sm font-medium mb-1 w-[40vw]">
+                    <strong>TYPE</strong>
+                </label>
+                <div className="flex flex-wrap gap-2 w-100 mt-2">
+                    {types.map((type) => (
+                        <button
+                            key={type}
+                            onClick={() => handleTypeSelect(type)}
+                            className={`${details.selectedTypes.includes(type)
+                                ? 'bg-black text-white'
+                                : 'bg-gray-200 text-gray-800'
+                                } text-sm py-1 px-3 rounded-full`}
+                        >
+                            {type}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>

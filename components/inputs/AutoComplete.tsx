@@ -42,7 +42,7 @@ const AutoComplete = ({ value, onChange }: any) => {
           type="text"
           placeholder="Search for a location"
           value={query}
-          className="peer w-full py-3 px-3 font-light bg-white border-2 border-gray-300	 focus:border-black transition disabled:opacity-70 disabled:cursor-not-allowed rounded-[10px]"
+          className="peer w-full py-2.5 px-3 font-light bg-white border-2 border-gray-300 focus:border-black transition disabled:opacity-70 disabled:cursor-not-allowed rounded-[10px]"
           onChange={e => setQuery(e.target.value)}
           onFocus={() => setIsActive(true)}
         />

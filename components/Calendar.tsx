@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -78,9 +76,9 @@ export default function Calendar({ operationalStart, operationalEnd, listingId }
         return days[day.toLowerCase()];
     };
 
-    const getBusinessDays = (start: string, end: string): number[] => {
-        const startIndex = dayToIndex(start);
-        const endIndex = dayToIndex(end);
+    const businessDays = useMemo(() => {
+        const startIndex = dayToIndex(operationalStart);
+        const endIndex = dayToIndex(operationalEnd);
         const days: number[] = [];
         if (startIndex <= endIndex) {
             for (let i = startIndex; i <= endIndex; i++) {
@@ -95,16 +93,14 @@ export default function Calendar({ operationalStart, operationalEnd, listingId }
             }
         }
         return days;
-    };
-
-    const businessDays = getBusinessDays(operationalStart, operationalEnd);
+    }, [operationalStart, operationalEnd]);
 
     const fetchEvents = useCallback(async () => {
         try {
             const res = await axios.get("/api/calendar/events", {
-                params: { listingId: listingId },
+                params: { listingId },
             });
-            const data = await res.data;
+            const data = res.data;
 
             if (data) {
                 const formattedEvents = data.map((event: any) => ({
@@ -156,39 +152,37 @@ export default function Calendar({ operationalStart, operationalEnd, listingId }
 
     return (
         <div className="container">
-            <div>
-                <FullCalendar
-                    ref={calendarRef}
-                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-                    initialView={calendarView}
-                    headerToolbar={headerToolbar}
-                    events={events}
-                    editable={false}
-                    selectable={false}
-                    dayMaxEvents={true}
-                    weekends={true}
-                    eventClick={handleEventClick}
-                    height="auto"
-                    eventColor="black"
-                    eventTextColor="white"
-                    handleWindowResize={true}
-                    displayEventEnd={true}
-                    eventTimeFormat={{
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        meridiem: 'short'
-                    }}
-                    views={{
-                        timeGridWeek: { allDaySlot: false },
-                        timeGridDay: { allDaySlot: false },
-                    }}
-                    businessHours={{
-                        daysOfWeek: businessDays,
-                        startTime: '00:00',
-                        endTime: '24:00',
-                    }}
-                />
-            </div>
+            <FullCalendar
+                ref={calendarRef}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                initialView={calendarView}
+                headerToolbar={headerToolbar}
+                events={events}
+                editable={false}
+                selectable={false}
+                dayMaxEvents={true}
+                weekends={true}
+                eventClick={handleEventClick}
+                height="auto"
+                eventColor="black"
+                eventTextColor="white"
+                handleWindowResize={true}
+                displayEventEnd={true}
+                eventTimeFormat={{
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                }}
+                views={{
+                    timeGridWeek: { allDaySlot: false },
+                    timeGridDay: { allDaySlot: false },
+                }}
+                businessHours={{
+                    daysOfWeek: businessDays,
+                    startTime: '00:00',
+                    endTime: '24:00',
+                }}
+            />
 
             <Modal
                 isOpen={modalOpen}

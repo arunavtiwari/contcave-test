@@ -34,14 +34,14 @@ function Button({
         disabled:opacity-70 
         disabled:cursor-not-allowed 
         hover:opacity-90 
-        py-2.5
+        py-2
         transition 
         w-full 
         flex
         justify-center
         gap-5
         ${rounded ? " rounded-full" : "rounded-md"}
-        ${classNames || (outline ? "bg-white border border-black text-black" : "bg-black border-red-500 text-white")}
+        ${classNames || (outline ? "bg-white border border-black text-black" : "bg-black border border-black text-white")}
       `}
     >
       {Icon && (
