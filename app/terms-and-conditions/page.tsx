@@ -3,14 +3,11 @@ import React from "react";
 
 type Props = {};
 
-const TermsAndConditions = async (props: Props) => {
+const TermsAndConditions = (props: Props) => {
     return (
         <>
             <div className="banner">
-                <img
-                    src="/assets/footer-banner.jpg"
-                    alt="Banner Image"
-                />
+                <img src="/assets/footer-banner.jpg" alt="Banner Image" />
                 <div className="overlay">
                     <h1 className="banner-text">Terms & Conditions</h1>
                 </div>
