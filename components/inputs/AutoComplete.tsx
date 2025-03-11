@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLoadScript, StandaloneSearchBox, Libraries } from '@react-google-maps/api';
 
-const libraries:Libraries = ['places'];
+const libraries: Libraries = ['places'];
 
 const AutoComplete = ({ value, onChange }: any) => {
   const [query, setQuery] = useState(value || '');
-  const [isActive, setIsActive] = useState(false); 
-  const searchBoxRef:any = useRef();
+  const [isActive, setIsActive] = useState(false);
+  const searchBoxRef: any = useRef(null);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyBEruwwnOyCLP9Al1y8a2a2Q6pRu50es0g', 
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API || '',
     libraries,
   });
 

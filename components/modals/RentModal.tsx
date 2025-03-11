@@ -24,7 +24,7 @@ import OtherListingDetails, { ListingDetails } from "../inputs/OtherListingDetai
 import SpaceVerification from "../inputs/SpaceVerification";
 import TermsAndConditionsModal from "../inputs/TermsAndConditions";
 import CustomAddonModal from "./CustomAddonModal";
-import AutoComplete from "../inputs/AutoComlete";
+import AutoComplete from "../inputs/AutoComplete";
 import { MdClose } from "react-icons/md";
 
 type Props = {};
