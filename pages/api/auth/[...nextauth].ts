@@ -30,7 +30,8 @@ async function refreshCalendarAccessToken(token: any) {
     return {
       ...token,
       calendarAccessToken: refreshedTokens.access_token,
-      calendarAccessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      calendarAccessTokenExpires:
+        Date.now() + refreshedTokens.expires_in * 1000,
       calendarRefreshToken:
         refreshedTokens.refresh_token ?? token.calendarRefreshToken,
     };
@@ -71,7 +72,7 @@ export const authOptions: AuthOptions = {
         },
       },
     }),
-    // Normal Credentials provider
+    // Credentials provider
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -110,20 +111,6 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === "google-calendar") {
-        try {
-          await prisma.user.update({
-            where: { id: user.id },
-            data: { is_owner: true },
-          });
-        } catch (error) {
-          console.error("Error updating owner field:", error);
-          return false;
-        }
-      }
-      return true;
-    },
     async jwt({ token, account }) {
       if (account) {
         if (account.provider === "google-calendar") {
@@ -160,6 +147,20 @@ export const authOptions: AuthOptions = {
         | string
         | undefined;
       return session;
+    },
+  },
+  events: {
+    async signIn(message) {
+      if (message.account?.provider === "google-calendar") {
+        try {
+          await prisma.user.update({
+            where: { id: message.user.id },
+            data: { is_owner: true },
+          });
+        } catch (error) {
+          console.error("Error updating owner field in signIn event:", error);
+        }
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

@@ -267,94 +267,98 @@ function ListingInfo({
       <hr />
 
       {/* Reviews */}
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center justify-between">
-          <p className="text-xl font-semibold">Reviews</p>
-          <p className="text-lg font-semibold"><span className="pr-1">{reviews.length}</span> Ratings</p>
-        </div>
+      {(reviews.length > 0 || canReview) && (
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center justify-between">
+            <p className="text-xl font-semibold">Reviews</p>
+            <p className="text-lg font-semibold"><span className="pr-1">{reviews.length}</span> Ratings</p>
+          </div>
 
-        {review && (
-          <>
-            <div className="flex flex-col relative gap-4 pb-4">
-              {reviews.map((review: any) => (
-                <div className="flex items-center p-5 shadow-md rounded-2xl border" key={review.id}>
-                  <div className="h-fit">
-                    <Avatar src={review.user?.image} userName={review.user?.name} size={45} />
-                  </div>
-                  <div className="pl-4 flex flex-col w-full">
-                    <div className="flex justify-between items-center">
-                      <div className="text-base font-bold">{review.user.name}</div>
-                      <div className="flex h-fit">
-                        {[...Array(5)].map((_, i) => (
-                          <IoIosStar key={i} size={20} color={i < review.rating ? "#FFD700" : "#e4e5e9"} />
-                        ))}
+          {reviews.length > 0 && (
+            <>
+              <div className="flex flex-col relative gap-4 pb-4">
+                {reviews.map((review: any) => (
+                  <div className="flex items-center p-5 shadow-md rounded-2xl border" key={review.id}>
+                    <div className="h-fit">
+                      <Avatar src={review.user?.image} userName={review.user?.name} size={45} />
+                    </div>
+                    <div className="pl-4 flex flex-col w-full">
+                      <div className="flex justify-between items-center">
+                        <div className="text-base font-bold">{review.user.name}</div>
+                        <div className="flex h-fit">
+                          {[...Array(5)].map((_, i) => (
+                            <IoIosStar key={i} size={20} color={i < review.rating ? "#FFD700" : "#e4e5e9"} />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="">
+                        <p>{review.comment}</p>
+                      </div>
+                      <div className="text-sm text-neutral-500"> {new Date(review.createdAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
                       </div>
                     </div>
-                    <div className="">
-                      <p>{review.comment}</p>
-                    </div>
-                    <div className="text-sm text-neutral-500"> {new Date(review.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
+                  </div>
+                ))}
+              </div>
+              <hr />
+            </>
+          )
+          }
+
+          {canReview && (
+            <>
+              <div className="flex flex-col gap-4">
+                <div className="text-xl capitalize font-semibold">Submit your review</div>
+                <div className="relative">
+                  <div className="text-sm font-bold mb-2">Write your message</div>
+                  <div className="flex w-full bg-white border border-slate-400 items-end px-2 py-2 rounded-md">
+                    <textarea
+                      value={review.comment}
+                      onChange={(e) => setReview({ ...review, comment: e.target.value })}
+                      className="w-[calc(100%-16px)] h-[120px] resize-none text-left border-0 text-sm bg-transparent focus:ring-0"
+                    />
+                    <div className="w-4 h-4">
+                      <Image src="/assets/edit.svg" height={18} width={18} className="w-full h-full object-contain" alt="" />
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            <hr />
-          </>
-        )
-        }
-
-        {canReview && (
-          <div className="flex flex-col gap-4">
-            <div className="text-xl capitalize font-semibold">Submit your review</div>
-            <div className="relative">
-              <div className="text-sm font-bold mb-2">Write your message</div>
-              <div className="flex w-full bg-white border border-slate-400 items-end px-2 py-2 rounded-md">
-                <textarea
-                  value={review.comment}
-                  onChange={(e) => setReview({ ...review, comment: e.target.value })}
-                  className="w-[calc(100%-16px)] h-[120px] resize-none text-left border-0 text-sm bg-transparent focus:ring-0"
-                />
-                <div className="w-4 h-4">
-                  <Image src="/assets/edit.svg" height={18} width={18} className="w-full h-full object-contain" alt="" />
+                <div className="flex gap-2 items-center">
+                  <span className="text-semibold">Rate</span>
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((starValue) => (
+                      <button
+                        key={starValue}
+                        type="button"
+                        onClick={() => setReview({ ...review, rating: starValue })}
+                        className="focus:outline-none"
+                      >
+                        <IoIosStar
+                          size={24}
+                          color={starValue <= review.rating ? "#FFD700" : "#e4e5e9"}
+                        />
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="flex gap-2 items-center">
-              <span className="text-semibold">Rate</span>
-              <div className="flex">
-                {[1, 2, 3, 4, 5].map((starValue) => (
-                  <button
-                    key={starValue}
-                    type="button"
-                    onClick={() => setReview({ ...review, rating: starValue })}
-                    className="focus:outline-none"
-                  >
-                    <IoIosStar
-                      size={24}
-                      color={starValue <= review.rating ? "#FFD700" : "#e4e5e9"}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={handleReviewSubmit}
-              className="rounded-full bg-black w-full py-2.5 text-white hover:opacity-90"
-            >
-              Submit
-            </button>
-          </div>
-        )}
-      </div>
+                <button
+                  type="button"
+                  onClick={handleReviewSubmit}
+                  className="rounded-full bg-black w-full py-2.5 text-white hover:opacity-90"
+                >
+                  Submit
+                </button>
+              </div>
+              <hr />
+            </>
+          )}
 
-      <hr />
+        </div>
+      )}
 
       {/* Cancellation Policy */}
       <div className="flex flex-col gap-4">

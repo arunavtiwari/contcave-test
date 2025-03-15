@@ -125,6 +125,7 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
     const dateString = formatInTimeZone(selectedDate, IST_TIMEZONE, "yyyy-MM-dd");
     const startDateTimeStr = `${dateString} ${selectedTimeSlot[0]}`;
     const endDateTimeStr = `${dateString} ${selectedTimeSlot[1]}`;
+    
 
     const formattedStartTime = formatInTimeZone(
       new Date(startDateTimeStr),
@@ -140,11 +141,7 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
     axios
       .post("/api/reservations", {
         totalPrice,
-        startDate: formatInTimeZone(
-          selectedDate,
-          IST_TIMEZONE,
-          "yyyy-MM-dd'T'HH:mm:ssXXX"
-        ),
+        startDate: new Date(dateString),
         startTime: formattedStartTime,
         endTime: formattedEndTime,
         listingId: listing.id,

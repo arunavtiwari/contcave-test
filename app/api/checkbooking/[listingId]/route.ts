@@ -25,7 +25,7 @@ export async function GET(request: Request, props: { params: Promise<IParams> })
     if (!listingId || typeof listingId !== "string") {
       return NextResponse.json({
         error: "Invalid Listing ID",
-      }, { status: 400 }); 
+      }, { status: 400 });
     }
 
     const reservationCount = await prisma.reservation.count({
@@ -39,7 +39,7 @@ export async function GET(request: Request, props: { params: Promise<IParams> })
       return NextResponse.json({
         canReview: false,
         message: "No reservations found for this user and listing"
-      }); 
+      });
     }
 
     const latestReservation = await prisma.reservation.findFirst({
@@ -52,7 +52,8 @@ export async function GET(request: Request, props: { params: Promise<IParams> })
       },
     });
 
-    if (!latestReservation) {
+    if (!latestReservation || latestReservation.startDate > new Date()) {
+      
       return NextResponse.json({
         error: "No reservation found",
       }, { status: 404 });
@@ -67,6 +68,6 @@ export async function GET(request: Request, props: { params: Promise<IParams> })
     console.error("Error in fetching reservation:", error);
     return NextResponse.json({
       error: "Internal Server Error",
-    }, { status: 500 }); 
+    }, { status: 500 });
   }
 }

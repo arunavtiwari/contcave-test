@@ -13,12 +13,9 @@ export async function POST(request: Request) {
     }, { status: 401 });
   }
 
-
   const body = await request.json();
 
   const { listingId, startDate, startTime, endTime, totalPrice, selectedAddons, instantBooking } = body;
-
-
 
   if (!listingId || !startDate || !startTime || !endTime || !totalPrice) {
     return NextResponse.json({
@@ -44,7 +41,7 @@ export async function POST(request: Request) {
       },
     },
     include: {
-      user: true, // Include the user (business owner) related to the listing
+      user: true,
     },
   });
 
@@ -54,7 +51,7 @@ export async function POST(request: Request) {
     },
 
     include: {
-      user: true, // Include the user (business owner) related to the listing
+      user: true,
     },
   });
 
@@ -94,8 +91,6 @@ export async function POST(request: Request) {
       `
     };
 
-
-
     try {
       await axios.post('https://api.mailersend.com/v1/email', emailData, {
         headers: {
@@ -107,7 +102,6 @@ export async function POST(request: Request) {
       console.error('Failed to send email:', error);
     }
   }
-
 
   if (currentUser && currentUser.email) {
     const emailData = {
@@ -149,8 +143,6 @@ export async function POST(request: Request) {
       
       `
     };
-
-
 
     try {
       await axios.post('https://api.mailersend.com/v1/email', emailData, {
