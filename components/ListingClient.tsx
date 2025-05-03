@@ -108,8 +108,8 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
     return (
       timeDifference * listing.price +
       addons.reduce(
-        (acc: number, value: { price: number; quantity: any }) =>
-          acc + value.price * (value.quantity ?? 0),
+        (acc: number, value: { price: number; qty: any }) =>
+          acc + value.price * (value.qty ?? 0),
         0
       )
     );
@@ -125,7 +125,7 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
     const dateString = formatInTimeZone(selectedDate, IST_TIMEZONE, "yyyy-MM-dd");
     const startDateTimeStr = `${dateString} ${selectedTimeSlot[0]}`;
     const endDateTimeStr = `${dateString} ${selectedTimeSlot[1]}`;
-    
+
 
     const formattedStartTime = formatInTimeZone(
       new Date(startDateTimeStr),
@@ -266,8 +266,8 @@ function ListingClient({ reservations = [], listing, currentUser }: Props) {
                   platformFee={0}
                   time={timeDifferenceInHours}
                   addons={selectedAddons.reduce(
-                    (acc: number, value: { price: number; quantity: any }) =>
-                      acc + value.price * (value.quantity ?? 0),
+                    (acc: number, value: { price: number; qty: any }) =>
+                      acc + value.price * (value.qty ?? 0),
                     0
                   )}
                   setSelectDate={(value) => setSelectedDate(value)}

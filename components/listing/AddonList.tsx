@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 
 const AddonItem = ({ addon, onChange, addonList }: any) => {
-  const [quantity, setQuantity] = useState(0);
+  const [qty, setQuantity] = useState(0);
 
   const handleIncrement = useCallback(() => {
     setQuantity((prev) => prev + 1);
@@ -14,8 +14,8 @@ const AddonItem = ({ addon, onChange, addonList }: any) => {
   }, []);
 
   useEffect(() => {
-    onChange(quantity);
-  }, [quantity, onChange]);
+    onChange(qty);
+  }, [qty, onChange]);
 
   return (
     <motion.div
@@ -42,7 +42,7 @@ const AddonItem = ({ addon, onChange, addonList }: any) => {
         </p>
         <p>₹ {addon.price}</p>
 
-        {quantity === 0 ? (
+        {qty === 0 ? (
           <button
             onClick={handleIncrement}
             className="bg-black text-white px-4 py-1.5 mt-1 rounded-full"
@@ -57,7 +57,7 @@ const AddonItem = ({ addon, onChange, addonList }: any) => {
             >
               -
             </button>
-            <span className="px-5 bg-neutral-300 py-1.5">{quantity}</span>
+            <span className="px-5 bg-neutral-300 py-1.5">{qty}</span>
             <button
               onClick={handleIncrement}
               className="text-white bg-green-500 h-8 w-8 rounded-r-xl text-xl leading-none"
@@ -73,8 +73,8 @@ const AddonItem = ({ addon, onChange, addonList }: any) => {
 
 
 const AddonsList = ({ addons, onChange, addonList }: any) => {
-  const handleQuantity = ((addon: any, quantity: number) => {
-    addon.quantity = quantity;
+  const handleQuantity = ((addon: any, qty: number) => {
+    addon.qty = qty;
     addons[addons.findIndex((item: any) => item.name == addon.name)] = addon;
     onChange(addons);
   });
@@ -86,7 +86,7 @@ const AddonsList = ({ addons, onChange, addonList }: any) => {
           <AddonItem
             key={index}
             addon={addon}
-            onChange={(quantity: number) => handleQuantity(addon, quantity)}
+            onChange={(qty: number) => handleQuantity(addon, qty)}
             addonList={addonList}
           />
         ))}
