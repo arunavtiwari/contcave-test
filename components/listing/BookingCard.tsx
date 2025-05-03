@@ -130,28 +130,41 @@ function BookingCard({
                     {/* Property Title */}
                     <div className="font-semibold text-lg">{data.title}</div>
                     {!reservation?.isApproved && onApprove && (
-                        <Button
-                            label="Approve"
-                            rounded
-                            classNames="text-md font-semibold py-2 border-2 bg-[#27AE60] border-[#27AE60] text-white"
-                            onClick={() => onApprove(reservation?.id ?? "")}
-                        />
+                        <div className="flex items-stretch">
+                            <div className="w-1/4">
+                                <div className="lex items-center justify-center bg-[#4682B4] rounded-l-full h-full cursor-pointer border border-[#4682B4]" onClick={toggleReceiptModal}>
+                                    <IconButton
+                                        icon={<FaCircleInfo />}
+                                        aria-label="Info"
+                                        size="xl"
+                                        className="p-0 w-full h-full"
+                                        color="white"
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-3/4">
+                                <Button
+                                    label="Approve"
+                                    classNames="text-md font-semibold bg-[#27AE60] border-[#27AE60] text-white rounded-r-full"
+                                    onClick={() => onApprove(reservation?.id ?? "")}
+                                />
+                            </div>
+                        </div>
+
                     )}
                     {!reservation?.isApproved && onReject && (
                         <Button
                             label="Reject"
                             rounded
-                            classNames="text-md font-semibold py-2 border-2 bg-[#E74C3C] border-[#E74C3C] text-white"
+                            classNames="text-md font-semibold bg-[#E74C3C] text-white"
                             onClick={() => onReject(reservation?.id ?? "")}
                         />
                     )}
                     {reservation && reservation?.isApproved != 0 && onChat && (
                         <div className="flex flex-col gap-2">
-                            {/* Row for 'i' button and 'Message the Host' button */}
-                            <div className="flex items-center">
-                                {/* "i" Button */}
+                            <div className="flex items-stretch">
                                 <div className="w-1/4">
-                                    <div className="flex items-center justify-center bg-[#4682B4] rounded-l-full p-3.5 cursor-pointer" onClick={toggleReceiptModal}>
+                                    <div className="flex items-center justify-center bg-[#4682B4] rounded-l-full h-full cursor-pointer border border-[#4682B4]" onClick={toggleReceiptModal}>
                                         <IconButton
                                             icon={<FaCircleInfo />}
                                             aria-label="Info"
@@ -162,13 +175,12 @@ function BookingCard({
                                     </div>
                                 </div>
 
-                                {/* Message the Host Button */}
                                 <div className="w-3/4">
                                     <Button
                                         label={onApprove ? "Message Client" : "Message Host"}
                                         onClick={() => onChat?.(reservation?.id ?? "")}
                                         disabled={bookingStatus != 1}
-                                        classNames={`button text-md font-semibold rounded-r-full ${bookingStatus == 1
+                                        classNames={`text-md font-semibold rounded-r-full border-black ${bookingStatus == 1
                                             ? "bg-gray-700 text-white"
                                             : "bg-gray-200 text-gray-500 cursor-not-allowed"
                                             }`}
@@ -181,7 +193,7 @@ function BookingCard({
                                     label="Cancel Reservation"
                                     onClick={handleCancel}
                                     rounded
-                                    classNames="text-md font-semibold border-2 bg-white border-[#E74C3C] text-[#E74C3C]"
+                                    classNames="text-md font-semibold bg-white border-[#E74C3C] text-[#E74C3C]"
                                 />
                             )}
 
@@ -254,14 +266,14 @@ function BookingCard({
                             <div className="flex justify-between">
                                 <span className="text-gray-700 font-medium">Add-ons Charge:</span>
                                 <span className="text-gray-900 font-semibold">
-                                    ₹ {booking?.selectedAddons.reduce((acc, value) => acc + (value.quantity * value.price), 0)}
+                                    ₹ {booking?.selectedAddons.reduce((acc, value) => acc + (value.qty * value.price), 0)}
                                 </span>
                             </div>
 
                             <div className="flex justify-between">
                                 <span className="text-gray-700 font-medium">Property Charge:</span>
                                 <span className="text-gray-900 font-semibold">
-                                    ₹ {booking?.totalPrice - booking?.selectedAddons.reduce((acc, value) => acc + (value.quantity * value.price), 0)}
+                                    ₹ {booking?.totalPrice - booking?.selectedAddons.reduce((acc, value) => acc + (value.qty * value.price), 0)}
                                 </span>
                             </div>
                         </div>
