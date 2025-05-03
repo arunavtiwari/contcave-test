@@ -16,9 +16,9 @@ import Input from "../inputs/Input";
 import { categories } from "../navbar/Categories";
 import Modal from "./Modal";
 import AmenitiesCheckbox from "../inputs/AmenityCheckbox";
-import getAmenities from "@/app/actions/getAmenities";
+import getAmenities from "@app/actions/getAmenities";
 import { Addons, Amenities, CustomAmenities } from '@prisma/client';
-import getAddons from "@/app/actions/getAddons";
+import getAddons from "@app/actions/getAddons";
 import AddonsSelection, { Addon } from "../inputs/AddonsSelection";
 import OtherListingDetails, { ListingDetails } from "../inputs/OtherListingDetails";
 import SpaceVerification from "../inputs/SpaceVerification";
@@ -276,7 +276,7 @@ function RentModal({ }: Props) {
                 onClick={() => removeImage(index)}
                 className="absolute top-2 right-2 rounded-full"
               >
-                <MdClose size={20} className="text-white bg-black rounded-full hover:bg-white hover:text-black border-solid border-2 border-black transition-colors ease-in-out duration-300" />
+                {/* <MdClose size={20} className="text-white bg-black rounded-full hover:bg-white hover:text-black border-solid border-2 border-black transition-colors ease-in-out duration-300" /> */}
               </button>
             </div>
           ))}

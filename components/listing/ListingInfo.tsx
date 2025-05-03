@@ -12,7 +12,7 @@ import AddonsList from "./AddonList";
 import { IoIosStar } from "react-icons/io";
 import Image from "next/image";
 import axios from "axios";
-import getAddons from "@/app/actions/getAddons";
+import getAddons from "@app/actions/getAddons";
 import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa6";
 
@@ -117,7 +117,7 @@ function ListingInfo({
         </div>
         {fullListing.avgReviewRating && fullListing.avgReviewRating != 0 && (
           <div className="font-semibold text-md flex items-center gap-1.5">
-            <FaStar size={18} color="gold" /> {fullListing.avgReviewRating.toFixed(1)}
+            {/* <FaStar size={18} color="gold" /> {fullListing.avgReviewRating.toFixed(1)} */}
           </div>
         )}
       </div>
@@ -286,9 +286,9 @@ function ListingInfo({
                       <div className="flex justify-between items-center">
                         <div className="text-base font-bold">{review.user.name}</div>
                         <div className="flex h-fit">
-                          {[...Array(5)].map((_, i) => (
+                          {/* {[...Array(5)].map((_, i) => (
                             <IoIosStar key={i} size={20} color={i < review.rating ? "#FFD700" : "#e4e5e9"} />
-                          ))}
+                          ))} */}
                         </div>
                       </div>
                       <div className="">
@@ -336,10 +336,10 @@ function ListingInfo({
                         onClick={() => setReview({ ...review, rating: starValue })}
                         className="focus:outline-none"
                       >
-                        <IoIosStar
+                        {/* <IoIosStar
                           size={24}
                           color={starValue <= review.rating ? "#FFD700" : "#e4e5e9"}
-                        />
+                        /> */}
                       </button>
                     ))}
                   </div>
