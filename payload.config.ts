@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { lexicalEditor, defaultEditorFeatures } from '@payloadcms/richtext-lexical';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { buildConfig } from 'payload';
 
@@ -8,7 +8,9 @@ import Media from './app/(payload)/collections/Media';
 import PostCategories from './app/(payload)/collections/PostCategories';
 
 export default buildConfig({
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: defaultEditorFeatures,
+  }),
 
   collections: [
     Posts,
