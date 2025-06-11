@@ -57,33 +57,33 @@ export default async function BlogsPage({ searchParams }: { searchParams?: { cat
                 <Link href="/admin" className="px-3 py-1 rounded bg-blue-600 text-white">Create Post</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((post: any) => (
-                <Link key={post.id} href={`/blogs/${post.slug}`}>
-                    <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-                        {post.featuredImage?.url && (
-                            <img
-                                src={post.featuredImage.url}
-                                alt={post.title}
-                                className="w-full h-48 object-cover"
-                            />
-                        )}
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">{post.title}</h2>
-                            <p className="text-gray-600 mt-2">
-                                {new Date(post.publishedDate).toLocaleDateString()}
-                            </p>
-                            {post.categories?.length > 0 && (
-                                <p className="text-sm text-gray-500">
-                                    {post.categories.map((c: any) => c.title).join(', ')}
-                                </p>
+                {filtered.map((post: any) => (
+                    <Link key={post.id} href={`/blogs/${post.slug}`}>
+                        <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition">
+                            {post.featuredImage?.url && (
+                                <img
+                                    src={post.featuredImage.url}
+                                    alt={post.title}
+                                    className="w-full h-48 object-cover"
+                                />
                             )}
-                            <p className="mt-2 text-gray-700">
-                                {lexicalToText(post.content).slice(0, 200)}
-                            </p>
+                            <div className="p-4">
+                                <h2 className="text-xl font-semibold">{post.title}</h2>
+                                <p className="text-gray-600 mt-2">
+                                    {new Date(post.publishedDate).toLocaleDateString()}
+                                </p>
+                                {post.categories?.length > 0 && (
+                                    <p className="text-sm text-gray-500">
+                                        {post.categories.map((c: any) => c.title).join(', ')}
+                                    </p>
+                                )}
+                                <p className="mt-2 text-gray-700">
+                                    {lexicalToText(post.content).slice(0, 200)}...
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </Link>
-            ))}
+                    </Link>
+                ))}
             </div>
         </div>
     );

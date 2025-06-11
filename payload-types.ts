@@ -8,9 +8,6 @@
 
 /**
  * Supported timezones in IANA format.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
   | 'Pacific/Midway'
@@ -99,6 +96,7 @@ export interface Config {
     workflows: unknown;
   };
 }
+
 export interface UserAuthOperations {
   forgotPassword: {
     email: string;
@@ -117,10 +115,7 @@ export interface UserAuthOperations {
     password: string;
   };
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
+
 export interface Post {
   id: string;
   title: string;
@@ -167,10 +162,7 @@ export interface PostCategory {
   updatedAt: string;
   createdAt: string;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
+
 export interface User {
   id: string;
   updatedAt: string;
@@ -184,10 +176,7 @@ export interface User {
   lockUntil?: string | null;
   password?: string | null;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-locked-documents".
- */
+
 export interface PayloadLockedDocument {
   id: string;
   document?:
@@ -207,10 +196,7 @@ export interface PayloadLockedDocument {
   updatedAt: string;
   createdAt: string;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-preferences".
- */
+
 export interface PayloadPreference {
   id: string;
   user: {
@@ -230,10 +216,7 @@ export interface PayloadPreference {
   updatedAt: string;
   createdAt: string;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-migrations".
- */
+
 export interface PayloadMigration {
   id: string;
   name?: string | null;
@@ -241,10 +224,7 @@ export interface PayloadMigration {
   updatedAt: string;
   createdAt: string;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
- */
+
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
@@ -256,10 +236,7 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
+
 export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
@@ -271,10 +248,7 @@ export interface UsersSelect<T extends boolean = true> {
   loginAttempts?: T;
   lockUntil?: T;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-locked-documents_select".
- */
+
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
   document?: T;
   globalSlug?: T;
@@ -282,10 +256,7 @@ export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-preferences_select".
- */
+
 export interface PayloadPreferencesSelect<T extends boolean = true> {
   user?: T;
   key?: T;
@@ -293,16 +264,14 @@ export interface PayloadPreferencesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-migrations_select".
- */
+
 export interface PayloadMigrationsSelect<T extends boolean = true> {
   name?: T;
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
 }
+
 export interface MediaSelect<T extends boolean = true> {
   filename?: T;
   mimeType?: T;
@@ -320,14 +289,10 @@ export interface PostCategoriesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "auth".
- */
+
 export interface Auth {
   [k: string]: unknown;
 }
-
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
