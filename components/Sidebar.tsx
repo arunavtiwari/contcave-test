@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaCalendar, FaClock, FaArrowUpRightDots } from "react-icons/fa6";
 import { FaHome, FaCogs } from "react-icons/fa";
+import { ReactNode } from 'react'
 
 interface SidebarProps {
     selectedMenu: string;
@@ -13,6 +14,10 @@ interface SidebarProps {
     menuType?: "main" | "profile";
 }
 
+declare module 'react-icons/lib/index' {
+    export type homeIcon = (props: FaHome) => ReactNode
+  }
+
 const Sidebar: React.FC<SidebarProps> = ({ selectedMenu, setSelectedMenu, listingId, menuType = "main" }) => {
     const router = useRouter();
 
@@ -20,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedMenu, setSelectedMenu, listin
         { name: "Edit Property", icon: <FaHome size={22} className="hover:text-white sm:hover:text-black transition" /> },
         { name: "Sync Calendar", icon: <FaCalendar size={22} className="hover:text-white sm:hover:text-black transition" /> },
         { name: "Manage Timings", icon: <FaClock size={22} className="hover:text-white sm:hover:text-black transition" /> },
-        { name: "Settings", icon: <FaCogs size={22} className="hover:text-white sm:hover:text-black transition" />, path: "/services" },
+        { name: "Settings", icon: <FaCogs size={22} className="hover:text-white sm:hover:text-black transition" /> },
         {
             name: "Profile",
             icon: <Image src="/assets/user.svg" width={22} height={22} alt="Profile" className="object-contain" />,

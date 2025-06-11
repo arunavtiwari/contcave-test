@@ -60,7 +60,7 @@
 		"react-switch": "^7.1.0",
 		"react-toastify": "^11.0.5",
 		"react-world-flags": "^1.6.0",
-		"sass": "^1.86.3",
+		"sass": "^1.87.0",
 		"sharp": "^0.33.5",
 		"socket.io": "^4.8.1",
 		"typescript": "5.8.2",

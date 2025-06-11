@@ -4,7 +4,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   experimental: {
     reactCompiler: false,
-    esmExternals: false,
+     esmExternals: false,
   },
   images: {
     remotePatterns: [
