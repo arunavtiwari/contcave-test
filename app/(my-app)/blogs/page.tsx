@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { lexicalToHtml } from '@/lib/lexicalToHtml';
+import { lexicalToText } from '@/lib/lexicalToText';
 
 async function fetchCategories() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/post-categories`, {
@@ -71,10 +72,14 @@ export default async function BlogsPage({ searchParams }: { searchParams?: { cat
                             <p className="text-gray-600 mt-2">
                                 {new Date(post.publishedDate).toLocaleDateString()}
                             </p>
-                            <div
-                                className="mt-2 prose"
-                                dangerouslySetInnerHTML={{ __html: lexicalToHtml(post.content).slice(0, 200) }}
-                            />
+                            {post.categories?.length > 0 && (
+                                <p className="text-sm text-gray-500">
+                                    {post.categories.map((c: any) => c.title).join(', ')}
+                                </p>
+                            )}
+                            <p className="mt-2 text-gray-700">
+                                {lexicalToText(post.content).slice(0, 200)}
+                            </p>
                         </div>
                     </div>
                 </Link>
