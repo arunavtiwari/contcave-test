@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     posts: Post;
     users: User;
+    media: Media;
+    'post-categories': PostCategory;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +79,8 @@ export interface Config {
   collectionsSelect: {
     posts: PostsSelect<false> | PostsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    'post-categories': PostCategoriesSelect<false> | PostCategoriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -122,6 +126,8 @@ export interface Post {
   title: string;
   slug: string;
   author?: (string | null) | User;
+  featuredImage?: (string | null) | Media;
+  categories?: (string | PostCategory)[] | null;
   publishedDate?: string | null;
   content?: {
     root: {
@@ -138,6 +144,26 @@ export interface Post {
     };
     [k: string]: unknown;
   } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface Media {
+  id: string;
+  filename?: string;
+  mimeType?: string;
+  filesize?: number;
+  width?: number;
+  height?: number;
+  url?: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface PostCategory {
+  id: string;
+  title: string;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -223,6 +249,8 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   author?: T;
+  featuredImage?: T;
+  categories?: T;
   publishedDate?: T;
   content?: T;
   updatedAt?: T;
@@ -272,6 +300,23 @@ export interface PayloadPreferencesSelect<T extends boolean = true> {
 export interface PayloadMigrationsSelect<T extends boolean = true> {
   name?: T;
   batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+export interface MediaSelect<T extends boolean = true> {
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  url?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+
+export interface PostCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
