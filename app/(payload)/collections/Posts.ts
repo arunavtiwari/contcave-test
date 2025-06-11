@@ -26,6 +26,17 @@ const Posts: CollectionConfig = {
             relationTo: 'users',
         },
         {
+            name: 'featuredImage',
+            type: 'upload',
+            relationTo: 'media',
+        },
+        {
+            name: 'categories',
+            type: 'relationship',
+            relationTo: 'post-categories',
+            hasMany: true,
+        },
+        {
             name: 'publishedDate',
             type: 'date',
         },
