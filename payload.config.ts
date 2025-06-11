@@ -3,6 +3,8 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
 import Posts from './app/(payload)/collections/Posts'
+import Media from './app/(payload)/collections/Media'
+import PostCategories from './app/(payload)/collections/PostCategories'
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -10,7 +12,9 @@ export default buildConfig({
 
   // Define and configure your collections in this array
   collections: [
-    Posts
+    Posts,
+    Media,
+    PostCategories,
   ],
 
   // Your Payload secret - should be a complex and secure string, unguessable

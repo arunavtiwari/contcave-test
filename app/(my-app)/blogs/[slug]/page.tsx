@@ -1,6 +1,7 @@
 // app/(my-app)/blogs/[slug]/page.tsx
 
 import { notFound } from 'next/navigation';
+import { lexicalToHtml } from '@/lib/lexicalToHtml';
 
 async function fetchPost(slug: string) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?where[slug][equals]=${slug}`, {
@@ -29,10 +30,15 @@ export default async function BlogPostPage(props: { params: { slug: string } }) 
             {post.featuredImage?.url && (
                 <img src={post.featuredImage.url} alt={post.title} className="w-full rounded-lg" />
             )}
+            {post.categories?.length > 0 && (
+                <p className="mt-2 text-sm text-gray-600">
+                    {post.categories.map((c: any) => c.title).join(', ')}
+                </p>
+            )}
             <p className="text-gray-500">
                 Published on {new Date(post.publishedDate).toLocaleDateString()}
             </p>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div dangerouslySetInnerHTML={{ __html: lexicalToHtml(post.content) }} />
         </article>
     );
 }
