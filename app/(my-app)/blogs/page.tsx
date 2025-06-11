@@ -1,6 +1,7 @@
 // app/(my-app)/blogs/page.tsx
 
 import Link from 'next/link';
+import { lexicalToHtml } from '@/lib/lexicalToHtml';
 
 async function fetchPosts() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts?limit=10`, {
@@ -35,6 +36,10 @@ export default async function BlogsPage() {
                             <p className="text-gray-600 mt-2">
                                 {new Date(post.publishedDate).toLocaleDateString()}
                             </p>
+                            <div
+                                className="mt-2 prose"
+                                dangerouslySetInnerHTML={{ __html: lexicalToHtml(post.content).slice(0, 200) }}
+                            />
                         </div>
                     </div>
                 </Link>
