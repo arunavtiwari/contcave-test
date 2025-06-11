@@ -8,6 +8,8 @@ export default {
   theme: {
     fontFamily: {
       inter: ['Inter', 'sans-serif'],
+      roboto: ['Roboto', 'sans-serif'],
+      merriweather: ['Merriweather', 'serif'],
     },
     extend: {
       colors: {

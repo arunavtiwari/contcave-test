@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import additional fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Merriweather:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', 'Inter', sans-serif;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
 	width: 6px;
