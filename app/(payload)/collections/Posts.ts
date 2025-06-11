@@ -31,6 +31,12 @@ const Posts: CollectionConfig = {
             relationTo: 'media',
         },
         {
+            name: 'categories',
+            type: 'relationship',
+            relationTo: 'post-categories',
+            hasMany: true,
+        },
+        {
             name: 'publishedDate',
             type: 'date',
         },
